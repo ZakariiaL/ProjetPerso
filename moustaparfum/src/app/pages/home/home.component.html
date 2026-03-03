@@ -1,0 +1,28 @@
+<!-- ✅ Desktop -->
+<div class="product-list" *ngIf="!isMobile">
+  <div
+    class="product-card"
+    *ngFor="let product of products"
+    [routerLink]="['/product', product.id]"
+  >
+  <img [src]="'http://localhost:9095' + product.imageUrl" alt="{{ product.name }}" />
+
+    <h3>{{ product.name }}</h3>
+    <p class="price">{{ product.price | currency: 'EUR' }}</p>
+  </div>
+</div>
+
+<!-- ✅ Mobile - horizontal carousel 2x2 -->
+<div class="mobile-carousel" *ngIf="isMobile">
+  <div
+    class="carousel-slide"
+    *ngFor="let group of groupedProducts"
+  >
+    <div class="product-card" *ngFor="let product of group" [routerLink]="['/product', product.id]">
+      <img [src]="'http://localhost:8080' + product.imageUrl" alt="{{ product.name }}" />
+
+      <h3>{{ product.name }}</h3>
+      <p class="price">{{ product.price | currency: 'EUR' }}</p>
+    </div>
+  </div>
+</div>

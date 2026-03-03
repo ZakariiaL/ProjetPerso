@@ -1,0 +1,22 @@
+<app-sidebar [isOpen]="sidebarOpen" (closeSidebar)="toggleSidebar()"></app-sidebar>
+
+<app-navbar (menuClicked)="toggleSidebar()"></app-navbar>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+<!-- Icônes de contact flottantes -->
+<div class="social-float">
+  <a href="https://wa.me/212600000000" target="_blank" class="whatsapp" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <a href="https://m.me/votrepage" target="_blank" class="messenger" aria-label="Messenger">
+    <i class="fa-brands fa-facebook-messenger"></i>
+  </a>
+  <a href="https://www.instagram.com/direct/inbox/" target="_blank" class="instagram" aria-label="Instagram Direct">
+    <i class="fab fa-instagram"></i>
+  </a>
+</div>
+
+
+<app-footer></app-footer>

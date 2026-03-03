@@ -1,0 +1,90 @@
+// Desktop (inchangé)
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  padding: 2rem;
+  margin-left: 3.5cm;
+
+  .product-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(10, 10, 10, 10.05);
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+
+    .price {
+      color: #00915a;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+// ✅ Carrousel horizontal de groupes (mobile)
+.mobile-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 1rem;
+  gap: 1rem;
+  -webkit-overflow-scrolling: touch;
+  margin-left: 1rem;
+
+  .carousel-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .product-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 0.8rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(10, 10, 10, 10.05);
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+
+    img {
+      width: 100%;
+      max-height: 130px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    h3 {
+      font-size: 1rem;
+      margin: 0.4rem 0;
+    }
+
+    .price {
+      color: #00915a;
+      font-weight: bold;
+    }
+  }
+}

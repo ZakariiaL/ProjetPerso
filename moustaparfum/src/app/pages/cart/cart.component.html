@@ -1,0 +1,20 @@
+<h2>🛒 Votre panier</h2>
+
+<div *ngIf="cart.length === 0" class="empty">
+  Votre panier est vide.
+</div>
+
+<div class="cart-container" *ngIf="cart.length > 0">
+  <div class="cart-item" *ngFor="let product of cart">
+    <img [src]="product.imageUrl" alt="{{ product.name }}" />
+    <div class="details">
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.price | currency:'EUR' }}</p>
+    </div>
+  </div>
+
+  <hr />
+  <div class="cart-total">
+    <h3>Total : {{ total() | currency:'EUR' }}</h3>
+  </div>
+</div>

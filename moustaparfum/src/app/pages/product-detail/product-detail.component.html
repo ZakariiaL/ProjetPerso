@@ -1,0 +1,50 @@
+<div class="product-page">
+  <div class="product-image">
+    <img [src]="product.imageUrl" alt="{{ product.name }}" />
+  </div>
+
+  <div class="product-info">
+    <div class="availability">En stock</div>
+    <div class="inspiration">Inspired by</div>
+    <h1>{{ product.name }}</h1>
+    <div class="price">{{ product.price }} MAD</div>
+
+    <div class="size">
+      <label>Size: <strong>30ml</strong></label>
+      <div class="size-options">
+        <button class="selected">30ml</button>
+        <button>50ml</button>
+        <button>100ml</button>
+      </div>
+    </div>
+
+    <div class="quantity">
+      <label>Quantité</label>
+      <div class="qty-controls">
+        <button (click)="decrease()">−</button>
+        <span>{{ quantity }}</span>
+        <button (click)="increase()">+</button>
+      </div>
+    </div>
+
+    <button class="add-to-cart" (click)="addToCart()">Ajouter au panier</button>
+    <button class="buy-now" (click)="buyNow()">Acheter maintenant</button>
+
+    <div class="order-form" *ngIf="showOrderForm">
+      <h3>Finaliser la commande</h3>
+
+      <label>Nom complet</label>
+      <input type="text" [(ngModel)]="clientName" placeholder="Votre nom" />
+
+      <label>Numéro WhatsApp</label>
+      <input type="tel" [(ngModel)]="clientPhone" placeholder="Ex: +212600000000" />
+
+      <button (click)="sendOrderByEmail()">Envoyer ma commande par email</button>
+
+    </div>
+
+    <div class="description">
+      {{ product.description || 'Description non disponible pour ce produit.' }}
+    </div>
+  </div>
+</div>

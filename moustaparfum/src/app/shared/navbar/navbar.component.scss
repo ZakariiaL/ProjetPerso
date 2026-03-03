@@ -1,0 +1,214 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;             // ✅ assure la largeur plein écran
+  z-index: 1000;
+  background-color: #003334;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 1.2rem;
+  color: white;
+  transition: transform 0.6s ease-in-out;
+  box-sizing: border-box;   // ✅ évite débordement
+  box-shadow: 0 2px 8px rgba(10, 10, 10, 10.15);
+
+
+  &.hidden {
+    transform: translateY(-100%);
+  }
+
+
+  .left {
+    display: flex;
+    align-items: center;
+
+    .menu-btn {
+      background: none;
+      border: none;
+      color: #fdd835b9;
+      font-size: 1.8rem;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+
+    .logo img {
+      height: 60px;
+      display: block;
+      width: 200px;
+    }
+    
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    margin-left: 3rem;
+
+    a {
+      color: #fdd835b9;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.3rem;
+      font-family: "Alumni Sans SC", sans-serif;
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px;
+        left: 0;
+        background-color: #fdd835b9;
+        transition: width 0.3s ease;
+      }
+
+      &:hover {
+        color: white;
+
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .center {
+    display: flex;
+    align-items: center;
+
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+
+      .search-icon {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.6rem;
+        cursor: pointer;
+      }
+
+      .search-input {
+        margin-left: 0.5rem;
+        padding: 0.4rem 0.6rem;
+        border: none;
+        border-radius: 20px;
+        outline: none;
+        min-width: 150px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: none;
+      }
+
+      .search-input.show {
+        display: inline-block;
+      }
+    }
+  }
+
+  .cart-icon {
+    position: relative;
+    color: #fdd835b9;
+    font-size: 1.8rem;
+    margin-left: 1rem;
+    margin-right: 2cm;
+
+    .badge {
+      position: absolute;
+      top: -5px;
+      right: -8px;
+      background: red;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+    }
+  }
+}
+// ✅ Black Friday banner
+.blackfriday-banner {
+  margin-top: 4vw; // 🔁 ajustable selon la hauteur de ta navbar
+  background-color: #ebd178;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+  padding-top: 0.5vw;
+}
+
+
+.blackfriday-track {
+  display: inline-block;
+  white-space: nowrap;
+  position: absolute;
+  will-change: transform;
+  animation: scroll-full-left 10s linear infinite;
+}
+
+.blackfriday-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgb(10, 9, 9);
+  padding-left: 100vw;
+}
+
+@keyframes scroll-full-left {
+  0% {
+    transform: translateX(10%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .blackfriday-banner {
+    margin-top: 19vw; // ✅ fixe la place de la navbar (~60px)
+    padding-top: 2vw;
+  }
+
+  .navbar {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .logo img {
+    height: 45px;
+  }
+
+  .search-wrapper .search-input.show {
+    position: absolute;
+    top: 55px;
+    left: 10px;
+    right: 10px;
+    background: white;
+    color: black;
+    z-index: 999;
+  }
+
+  .cart-icon {
+    font-size: 1.6rem;
+    margin-left: 0.6rem;
+
+    .badge {
+      font-size: 0.65rem;
+    }
+  }
+}
