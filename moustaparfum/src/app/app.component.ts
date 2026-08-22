@@ -25,7 +25,11 @@ import { CartSidebarComponent } from './shared/cart-sidebar/cart-sidebar.compone
 export class AppComponent {
   sidebarOpen = false;
 
-  toggleSidebar() {
+  toggleSidebar(): void {
     this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen = false;
   }
 }

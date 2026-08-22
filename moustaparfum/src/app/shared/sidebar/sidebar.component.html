@@ -1,9 +1,16 @@
 <div class="sidebar-backdrop" [class.visible]="!isClosed" (click)="closeSidebar()"></div>
 
 <aside class="sidebar-layout" [class.collapsed]="isClosed">
-  <button class="toggle-button" (click)="onClick($event)" aria-label="Menu">
-    <i class="fa-solid" [class.fa-chevron-left]="!isClosed" [class.fa-chevron-right]="isClosed"></i>
-  </button>
+  <div class="sidebar-header">
+    <div>
+      <span>Menu</span>
+      <strong>Moustaparfum</strong>
+    </div>
+
+    <button class="close-button" type="button" (click)="closeSidebar()" aria-label="Fermer le menu">
+      <span class="material-icons">close</span>
+    </button>
+  </div>
 
   <nav class="content">
     <button class="sidebar-icon" *ngFor="let menu of menus" type="button" (click)="navigate(menu.route)">

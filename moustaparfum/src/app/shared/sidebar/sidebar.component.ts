@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { SidebarService } from '../../services/sidebar.service';
@@ -11,9 +11,13 @@ import { SidebarService } from '../../services/sidebar.service';
   imports: [CommonModule],
 })
 export class SidebarComponent {
-  @Input() isOpen: boolean = false;
+  @Output() closed = new EventEmitter<void>();
 
   isClosed = true;
+
+  @Input() set isOpen(value: boolean) {
+    this.isClosed = !value;
+  }
 
   menus = [
     { label: 'Accueil', icon: 'fas fa-home', route: '/' },
@@ -34,15 +38,10 @@ export class SidebarComponent {
     });
   }
 
-  onClick(event: Event): void {
-    this.isClosed = !this.isClosed;
-    this.sidebarservice.toggleSidebar(this.isClosed);
-    event.stopPropagation();
-  }
-
   closeSidebar(): void {
     this.isClosed = true;
     this.sidebarservice.toggleSidebar(this.isClosed);
+    this.closed.emit();
   }
 
   navigate(route: string): void {
