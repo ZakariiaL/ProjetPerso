@@ -78,12 +78,12 @@ export class AdminDashboardComponent implements OnInit {
     }
 
     if (!file.type.startsWith('image/')) {
-      this.error = 'Veuillez selectionner un fichier image valide';
+      this.error = 'Veuillez sélectionner un fichier image valide';
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      this.error = 'La taille de l image ne doit pas depasser 5MB';
+      this.error = 'La taille de l’image ne doit pas dépasser 5 Mo';
       return;
     }
 
@@ -134,7 +134,7 @@ export class AdminDashboardComponent implements OnInit {
       if (this.newProduct.id && this.newProduct.id > 0) {
         this.productService.update(this.newProduct.id, this.newProduct).subscribe({
           next: () => {
-            this.success = 'Produit modifie avec succes';
+            this.success = 'Produit modifié avec succès';
             this.loadProducts();
             this.resetFormAndImage();
             this.loading = false;
@@ -148,7 +148,7 @@ export class AdminDashboardComponent implements OnInit {
       } else {
         this.productService.create(productToCreate).subscribe({
           next: () => {
-            this.success = 'Produit ajoute avec succes';
+            this.success = 'Produit ajouté avec succès';
             this.loadProducts();
             this.resetFormAndImage();
             this.loading = false;
@@ -193,7 +193,7 @@ export class AdminDashboardComponent implements OnInit {
 
       this.productService.delete(id).subscribe({
         next: () => {
-          this.success = 'Produit supprime avec succes';
+          this.success = 'Produit supprimé avec succès';
           this.loadProducts();
           this.loading = false;
         },

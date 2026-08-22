@@ -91,7 +91,7 @@ export class ProductDetailComponent implements OnInit {
 
     emailjs.send('service_kcuy57s', 'template_h29lscf', templateParams, 'wB9UpjweMbFN404_6')
       .then(() => {
-        alert('Commande envoyee avec succes par email !');
+        alert('Commande envoyée avec succès par email !');
         this.showOrderForm = false;
       }, (error) => {
         console.error('Erreur lors de l\'envoi de l\'email :', error);

@@ -1,8 +1,9 @@
  import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, of, throwError } from 'rxjs';
 import { Product, CreateProductRequest } from '../models/product.model';
 import { AuthService } from './auth.service';
+import { FALLBACK_PRODUCTS } from '../data/fallback-products';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -15,13 +16,20 @@ export class ProductService {
 
   getAll(): Observable<Product[]> {
     return this.http.get<Product[]>(this.baseUrl).pipe(
-      catchError(this.handleError)
+      catchError((error) => {
+        console.warn('Backend produits indisponible, utilisation du catalogue local.', error);
+        return of(FALLBACK_PRODUCTS);
+      })
     );
   }
 
   getById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.baseUrl}/${id}`).pipe(
-      catchError(this.handleError)
+      catchError((error) => {
+        console.warn('Backend produit indisponible, utilisation du catalogue local.', error);
+        const product = FALLBACK_PRODUCTS.find((item) => item.id === id) || FALLBACK_PRODUCTS[0];
+        return of(product);
+      })
     );
   }
 

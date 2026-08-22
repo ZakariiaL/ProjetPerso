@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Product } from '../models/product.model';
 
 @Injectable({
@@ -9,6 +9,8 @@ export class CartService {
   private cart: Product[] = [];
   private cartSubject = new BehaviorSubject<Product[]>([]);
   cart$ = this.cartSubject.asObservable();
+  private addedToCartSubject = new Subject<Product>();
+  addedToCart$ = this.addedToCartSubject.asObservable();
 
   // Sidebar (panier à droite)
   private sidebar = new BehaviorSubject<boolean>(false);
@@ -21,6 +23,7 @@ export class CartService {
   addToCart(product: Product): void {
     this.cart.push(product);
     this.cartSubject.next([...this.cart]); // déclenche l'observable
+    this.addedToCartSubject.next(product);
   }
 
   /**

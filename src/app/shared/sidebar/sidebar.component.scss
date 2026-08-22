@@ -2,7 +2,8 @@
   position: fixed;
   inset: 0;
   z-index: 998;
-  background: rgba(0, 20, 20, 0.34);
+  background: rgba(0, 20, 20, 0.28);
+  backdrop-filter: blur(2px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -14,51 +15,43 @@
 }
 
 .sidebar-layout {
-  width: 290px;
+  width: min(340px, 86vw);
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 999;
-  padding: 108px 18px 24px;
+  padding: 24px 18px;
   box-sizing: border-box;
-  background: rgba(0, 51, 52, 0.96);
+  background:
+    linear-gradient(160deg, rgba(0, 51, 52, 0.84), rgba(8, 78, 78, 0.78)),
+    rgba(0, 51, 52, 0.74);
   color: #fdd835;
-  box-shadow: 18px 0 50px rgba(0, 0, 0, 0.28);
+  box-shadow: 22px 0 70px rgba(0, 0, 0, 0.32);
+  border-right: 1px solid rgba(253, 216, 53, 0.18);
+  backdrop-filter: blur(18px) saturate(1.18);
   transform: translateX(0);
-  transition: transform 0.32s ease;
+  transition: transform 0.32s ease, box-shadow 0.32s ease;
+  font-family: "Manrope", "Segoe UI", sans-serif;
 }
 
 .sidebar-layout.collapsed {
   transform: translateX(-100%);
 }
 
-.toggle-button {
-  position: absolute;
-  top: 108px;
-  right: -42px;
-  width: 42px;
-  height: 42px;
-  border: 0;
-  border-radius: 0 8px 8px 0;
-  background: #fdd835;
-  color: #003334;
-  cursor: pointer;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
-}
-
 .content {
   display: grid;
-  gap: 8px;
+  gap: 10px;
+  padding-top: 78px;
 }
 
 .sidebar-icon {
-  min-height: 50px;
+  min-height: 54px;
   width: 100%;
-  border: 1px solid rgba(253, 216, 53, 0.1);
+  border: 1px solid rgba(253, 216, 53, 0.14);
   border-radius: 8px;
-  background: transparent;
-  color: #fdd835;
+  background: rgba(255, 255, 255, 0.055);
+  color: #f9e27a;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -66,30 +59,36 @@
   cursor: pointer;
   text-align: left;
   font: inherit;
-  transition: background 0.22s ease, transform 0.22s ease;
+  transition: background 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
 
   &:hover {
-    background: rgba(253, 216, 53, 0.12);
+    background: rgba(253, 216, 53, 0.16);
+    border-color: rgba(253, 216, 53, 0.34);
     transform: translateX(4px);
   }
 
   i {
-    width: 24px;
+    width: 26px;
     text-align: center;
+    color: #fff8d6;
+    font-size: 1.05rem;
   }
 
   span {
+    color: #fff6c2;
+    font-size: 0.96rem;
     font-weight: 800;
+    letter-spacing: 0.01em;
   }
 }
 
 @media (max-width: 760px) {
   .sidebar-layout {
     width: min(84vw, 310px);
-    padding-top: 96px;
+    padding: 18px 14px;
   }
 
-  .toggle-button {
-    top: 96px;
+  .content {
+    padding-top: 72px;
   }
 }

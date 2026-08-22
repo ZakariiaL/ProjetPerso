@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -14,12 +14,28 @@ import { isBrowser } from '../../utils/platform';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   currentPage = 0;
   itemsPerPageMobile = 4;
   isMobile = false;
   activeCategory: string | null = null;
+  activeBannerIndex = 0;
+  banners = [
+    {
+      image: 'assets/parfums/Gemini_Generated_Image_5eia0o5eia0o5eia.jpg',
+      alt: 'Collection Musta Parfums - parfums d\'exception et elegance'
+    },
+    {
+      image: 'assets/parfums/Gemini_Generated_Image_dpv2akdpv2akdpv2.jpg',
+      alt: 'Collection Musta Parfums - l\'art d\'etre soi'
+    }
+  ];
+
+  private bannerTimerId: ReturnType<typeof setInterval> | null = null;
+  private resizeListener = () => {
+    this.isMobile = window.innerWidth < 768;
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -30,10 +46,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     if (isBrowser()) {
       this.isMobile = window.innerWidth < 768;
-
-      window.addEventListener('resize', () => {
-        this.isMobile = window.innerWidth < 768;
-      });
+      window.addEventListener('resize', this.resizeListener);
+      this.startBannerAutoplay();
     }
 
     this.productService.getAll().subscribe((all: Product[]) => {
@@ -46,6 +60,14 @@ export class HomeComponent implements OnInit {
         this.currentPage = 0;
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    if (isBrowser()) {
+      window.removeEventListener('resize', this.resizeListener);
+    }
+
+    this.pauseBannerAutoplay();
   }
 
   get featuredProduct(): Product | null {
@@ -63,6 +85,45 @@ export class HomeComponent implements OnInit {
 
   changePage(index: number): void {
     this.currentPage = index;
+  }
+
+  nextBanner(): void {
+    this.activeBannerIndex = (this.activeBannerIndex + 1) % this.banners.length;
+    this.restartBannerAutoplay();
+  }
+
+  previousBanner(): void {
+    this.activeBannerIndex = (this.activeBannerIndex - 1 + this.banners.length) % this.banners.length;
+    this.restartBannerAutoplay();
+  }
+
+  goToBanner(index: number): void {
+    this.activeBannerIndex = index;
+    this.restartBannerAutoplay();
+  }
+
+  startBannerAutoplay(): void {
+    if (!isBrowser() || this.bannerTimerId) {
+      return;
+    }
+
+    this.bannerTimerId = setInterval(() => {
+      this.activeBannerIndex = (this.activeBannerIndex + 1) % this.banners.length;
+    }, 3000);
+  }
+
+  pauseBannerAutoplay(): void {
+    if (!this.bannerTimerId) {
+      return;
+    }
+
+    clearInterval(this.bannerTimerId);
+    this.bannerTimerId = null;
+  }
+
+  private restartBannerAutoplay(): void {
+    this.pauseBannerAutoplay();
+    this.startBannerAutoplay();
   }
 
   addToCart(event: Event, product: Product): void {

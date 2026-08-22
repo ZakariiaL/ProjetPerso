@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { SidebarService } from '../../services/sidebar.service';
@@ -11,17 +11,22 @@ import { SidebarService } from '../../services/sidebar.service';
   imports: [CommonModule],
 })
 export class SidebarComponent {
-  @Input() isOpen: boolean = false;
+  @Output() closed = new EventEmitter<void>();
 
   isClosed = true;
+
+  @Input() set isOpen(value: boolean) {
+    this.isClosed = !value;
+  }
 
   menus = [
     { label: 'Accueil', icon: 'fas fa-home', route: '/' },
     { label: 'Catalogue', icon: 'fas fa-fire', route: '/' },
-    { label: 'Parfum Homme', icon: 'fas fa-mars', route: '/category/homme' },
-    { label: 'Parfum Femme', icon: 'fas fa-venus', route: '/category/femme' },
-    { label: 'Unisex', icon: 'fas fa-genderless', route: '/category/unisex' },
-    { label: 'Nouveautes', icon: 'fas fa-star', route: '/collection' },
+    { label: 'Parfums hommes', icon: 'fas fa-mars', route: '/category/homme' },
+    { label: 'Parfums femmes', icon: 'fas fa-venus', route: '/category/femme' },
+    { label: 'Niche', icon: 'fas fa-gem', route: '/category/niche' },
+    { label: 'Ambiances', icon: 'fas fa-spa', route: '/category/ambiances' },
+    { label: 'Nouveautés', icon: 'fas fa-star', route: '/collection' },
     { label: 'Promotions', icon: 'fas fa-tags', route: '/collection' },
     { label: 'Contact', icon: 'fas fa-phone', route: '/suivi' },
   ];
@@ -34,15 +39,10 @@ export class SidebarComponent {
     });
   }
 
-  onClick(event: Event): void {
-    this.isClosed = !this.isClosed;
-    this.sidebarservice.toggleSidebar(this.isClosed);
-    event.stopPropagation();
-  }
-
   closeSidebar(): void {
     this.isClosed = true;
     this.sidebarservice.toggleSidebar(this.isClosed);
+    this.closed.emit();
   }
 
   navigate(route: string): void {

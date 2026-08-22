@@ -2,19 +2,10 @@
   <section class="hero">
     <div class="hero-copy">
       <p class="eyebrow">Extraits de parfum</p>
-      <h1>Une signature intense, elegante et durable.</h1>
+      <h1>Une signature intense, élégante et durable.</h1>
       <p class="hero-text">
-        Decouvrez une selection de parfums concentres, choisis pour laisser un sillage propre, moderne et memorable.
+        Découvrez une sélection de parfums concentrés, choisis pour laisser un sillage propre, moderne et mémorable.
       </p>
-      <div class="hero-actions">
-        <a routerLink="/" class="primary-action">Explorer</a>
-        <a routerLink="/category/femme" class="secondary-action">Collection femme</a>
-      </div>
-      <div class="hero-stats">
-        <span><strong>30ml</strong> format signature</span>
-        <span><strong>24/48h</strong> livraison Maroc</span>
-        <span><strong>Premium</strong> inspirations</span>
-      </div>
     </div>
 
     <div class="hero-visual" *ngIf="featuredProduct">
@@ -27,6 +18,63 @@
         <small>{{ featuredProduct.price | currency:'MAD':'symbol':'1.0-0' }}</small>
       </div>
     </div>
+  </section>
+
+  <section
+    class="campaign-carousel"
+    aria-label="Bannieres Musta Parfums"
+    (mouseenter)="pauseBannerAutoplay()"
+    (mouseleave)="startBannerAutoplay()"
+  >
+    <a
+      *ngFor="let banner of banners; let index = index"
+      routerLink="/category/niche"
+      class="campaign-banner"
+      [class.active]="index === activeBannerIndex"
+      aria-label="Collection Musta Parfums"
+    >
+      <img
+        [src]="banner.image"
+        [alt]="banner.alt"
+      />
+    </a>
+
+    <button class="banner-control banner-control-left" type="button" aria-label="Banniere precedente" (click)="previousBanner()">
+      &lsaquo;
+    </button>
+    <button class="banner-control banner-control-right" type="button" aria-label="Banniere suivante" (click)="nextBanner()">
+      &rsaquo;
+    </button>
+
+    <div class="banner-dots" aria-label="Selection de la banniere">
+      <button
+        *ngFor="let banner of banners; let index = index"
+        type="button"
+        [class.active]="index === activeBannerIndex"
+        [attr.aria-label]="'Afficher la banniere ' + (index + 1)"
+        (click)="goToBanner(index)"
+      ></button>
+    </div>
+  </section>
+
+  <section class="promo-banners" aria-label="Univers Moustaparfum">
+    <a routerLink="/category/ambiances" class="promo-card ambiance-card">
+      <div>
+        <span>Ambiances</span>
+        <h3>Parfumez votre intérieur</h3>
+        <p>Des notes douces et raffinées pour une atmosphère apaisante.</p>
+      </div>
+      <img src="assets/parfums/N4.png" alt="Parfum d'ambiance Moustaparfum" />
+    </a>
+
+    <a routerLink="/category/femme" class="promo-card feminine-card">
+      <div>
+        <span>Éclat féminin</span>
+        <h3>Des sillages lumineux</h3>
+        <p>Floraux, musqués ou gourmands, choisis pour marquer les esprits.</p>
+      </div>
+      <img src="assets/parfums/F3.png" alt="Parfum femme Moustaparfum" />
+    </a>
   </section>
 
   <section class="category-strip">
@@ -42,15 +90,19 @@
       <span class="material-icons">female</span>
       Femme
     </a>
-    <a routerLink="/category/unisex" [class.active]="activeCategory === 'unisex'">
-      <span class="material-icons">diversity_1</span>
-      Unisex
+    <a routerLink="/category/niche" [class.active]="activeCategory === 'niche'">
+      <span class="material-icons">diamond</span>
+      Niche
+    </a>
+    <a routerLink="/category/ambiances" [class.active]="activeCategory === 'ambiances'">
+      <span class="material-icons">spa</span>
+      Ambiances
     </a>
   </section>
 
   <section class="catalog-header">
     <div>
-      <p class="eyebrow">{{ activeCategory ? 'Collection parfumee' : 'Les favoris de nos clients' }}</p>
+      <p class="eyebrow">{{ activeCategory ? 'Collection parfumée' : 'Les favoris de nos clients' }}</p>
       <h2>{{ activeCategory ? ('Parfums ' + activeCategory) : 'Produits les plus vendus' }}</h2>
     </div>
     <p>{{ products.length }} parfum{{ products.length > 1 ? 's' : '' }} disponible{{ products.length > 1 ? 's' : '' }}</p>
@@ -95,8 +147,8 @@
   <ng-template #emptyCatalog>
     <section class="empty-catalog">
       <span class="material-icons">inventory_2</span>
-      <h2>Aucun parfum trouve</h2>
-      <p>Revenez bientot, la collection est en preparation.</p>
+      <h2>Aucun parfum trouvé</h2>
+      <p>Revenez bientôt, la collection est en préparation.</p>
     </section>
   </ng-template>
 </section>

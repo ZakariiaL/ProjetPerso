@@ -1,6 +1,14 @@
-<app-sidebar [isOpen]="sidebarOpen" (closeSidebar)="toggleSidebar()"></app-sidebar>
+<app-sidebar [isOpen]="sidebarOpen" (closed)="closeSidebar()"></app-sidebar>
 
 <app-navbar (menuClicked)="toggleSidebar()"></app-navbar>
+
+<div class="cart-toast" *ngIf="cartToastProduct">
+  <span class="material-icons">shopping_bag</span>
+  <div>
+    <strong>Ajouté au panier</strong>
+    <p>{{ cartToastProduct.name }}</p>
+  </div>
+</div>
 
 <main>
   <router-outlet></router-outlet>

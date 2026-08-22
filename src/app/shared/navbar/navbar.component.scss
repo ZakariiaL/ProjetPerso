@@ -161,6 +161,14 @@
 .cart-icon {
   position: relative;
 
+  &.bump {
+    animation: cartBump 0.52s ease;
+
+    .badge {
+      animation: badgePop 0.52s ease;
+    }
+  }
+
   .badge {
     position: absolute;
     top: -8px;
@@ -175,6 +183,32 @@
     font-size: 0.68rem;
     font-weight: 900;
     border-radius: 999px;
+  }
+}
+
+@keyframes cartBump {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  35% {
+    transform: translateY(-4px) scale(1.18);
+    color: #ffffff;
+  }
+  70% {
+    transform: translateY(0) scale(0.96);
+  }
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0.6);
+  }
+  55% {
+    transform: scale(1.22);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 

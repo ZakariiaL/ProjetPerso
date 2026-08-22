@@ -1,13 +1,13 @@
 <section class="cart-page">
   <div class="cart-heading">
     <p>Panier</p>
-    <h1>Votre selection</h1>
+    <h1>Votre sélection</h1>
   </div>
 
   <div *ngIf="cart.length === 0" class="empty">
     <span class="material-icons">shopping_bag</span>
     <h2>Votre panier est vide</h2>
-    <p>Ajoutez vos parfums preferes et retrouvez-les ici.</p>
+    <p>Ajoutez vos parfums préférés et retrouvez-les ici.</p>
     <a routerLink="/">Explorer le catalogue</a>
   </div>
 
@@ -26,7 +26,7 @@
     <aside class="cart-summary">
       <span>Total</span>
       <strong>{{ total() | currency:'MAD':'symbol':'1.0-0' }}</strong>
-      <p>La finalisation se fait par contact direct afin de confirmer disponibilite et livraison.</p>
+      <p>La finalisation se fait par contact direct afin de confirmer la disponibilité et la livraison.</p>
       <a href="https://wa.me/212600000000" target="_blank">Commander via WhatsApp</a>
     </aside>
   </div>

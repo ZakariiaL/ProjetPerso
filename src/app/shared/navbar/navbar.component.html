@@ -11,9 +11,9 @@
 
   <nav class="nav-links">
     <a routerLink="/">Accueil</a>
-    <a routerLink="/category/homme">Parfum Hommes</a>
-    <a routerLink="/category/femme">Parfum Femmes</a>
-    <a routerLink="/collection">Nouveautes</a>
+    <a routerLink="/category/homme">Parfums hommes</a>
+    <a routerLink="/category/femme">Parfums femmes</a>
+    <a routerLink="/collection">Nouveautés</a>
     <a routerLink="/suivi">Contact</a>
     <a *ngIf="adminSession" routerLink="/admin">Admin</a>
   </nav>
@@ -34,7 +34,7 @@
   </div>
 
   <div class="right-actions">
-    <a routerLink="/cart" class="cart-icon" aria-label="Panier">
+    <a routerLink="/cart" class="cart-icon" [class.bump]="cartBump" aria-label="Panier">
       <span class="material-icons">shopping_cart</span>
       <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
     </a>
@@ -54,7 +54,7 @@
 <div class="blackfriday-banner">
   <div class="blackfriday-track">
     <span class="blackfriday-text">
-      SOLDE !! Jusqu'a -50% sur une selection de parfums
+      Soldes ! Jusqu'à -50% sur une sélection de parfums
     </span>
   </div>
 </div>

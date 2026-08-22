@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
   @Output() menuClicked = new EventEmitter<void>();
 
   cartCount = 0;
+  cartBump = false;
   searchVisible = false;
   isDesktop = true;
   adminSession: AdminSession | null = null;
@@ -44,6 +45,10 @@ export class NavbarComponent implements OnInit {
       });
 
       this.cartService.cart$.subscribe(cart => {
+        if (cart.length > this.cartCount) {
+          this.cartBump = true;
+          setTimeout(() => this.cartBump = false, 520);
+        }
         this.cartCount = cart.length;
       });
     }

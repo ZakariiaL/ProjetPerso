@@ -21,7 +21,7 @@
     <div class="price">{{ product.price | currency:'MAD':'symbol':'1.0-0' }}</div>
 
     <p class="description">
-      {{ product.description || 'Un extrait de parfum intense, elegant et travaille pour accompagner votre signature au quotidien.' }}
+      {{ product.description || 'Un extrait de parfum intense, élégant et travaillé pour accompagner votre signature au quotidien.' }}
     </p>
 
     <div class="feature-row">
@@ -43,11 +43,11 @@
       <h2>Pyramide olfactive</h2>
       <div class="notes-grid">
         <div>
-          <span>Tete</span>
+          <span>Tête</span>
           <strong>{{ product.topNotes || '-' }}</strong>
         </div>
         <div>
-          <span>Coeur</span>
+          <span>Cœur</span>
           <strong>{{ product.heartNotes || '-' }}</strong>
         </div>
         <div>
@@ -67,7 +67,7 @@
     </div>
 
     <div class="quantity">
-      <label>Quantite</label>
+      <label>Quantité</label>
       <div class="qty-controls">
         <button type="button" (click)="decrease()">-</button>
         <span>{{ quantity }}</span>
@@ -91,7 +91,7 @@
       <label>Nom complet</label>
       <input type="text" [(ngModel)]="clientName" placeholder="Votre nom" />
 
-      <label>Numero WhatsApp</label>
+      <label>Numéro WhatsApp</label>
       <input type="tel" [(ngModel)]="clientPhone" placeholder="Ex: +212600000000" />
 
       <button type="button" (click)="sendOrderByEmail()">Envoyer ma commande</button>

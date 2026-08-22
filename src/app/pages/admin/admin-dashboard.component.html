@@ -4,7 +4,7 @@
       <p>Administration</p>
       <h1>Gestion des parfums</h1>
     </div>
-    <span>{{ products.length }} reference{{ products.length > 1 ? 's' : '' }}</span>
+    <span>{{ products.length }} référence{{ products.length > 1 ? 's' : '' }}</span>
   </div>
 
   <div *ngIf="error" class="alert alert-error">
@@ -25,7 +25,7 @@
       </div>
 
       <div class="form-section">
-        <h3>Identite</h3>
+        <h3>Identité</h3>
         <div class="form-row">
           <label>Nom du parfum *
             <input [(ngModel)]="newProduct.name" name="name" required class="form-input" />
@@ -36,12 +36,13 @@
         </div>
 
         <div class="form-row">
-          <label>Categorie *
+          <label>Catégorie *
             <select [(ngModel)]="newProduct.category" name="category" required class="form-input">
               <option value="" disabled>Choisir</option>
               <option value="HOMME">Homme</option>
               <option value="FEMME">Femme</option>
-              <option value="UNISEX">Unisex</option>
+              <option value="niche">Niche</option>
+              <option value="ambiances">Ambiances</option>
             </select>
           </label>
           <label>Prix MAD *
@@ -79,7 +80,7 @@
       </div>
 
       <div class="form-section">
-        <h3>Image et disponibilite</h3>
+        <h3>Image et disponibilité</h3>
         <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput hidden />
         <div class="image-upload-container">
           <button type="button" (click)="fileInput.click()" class="btn btn-outline">
@@ -90,7 +91,7 @@
         </div>
 
         <div *ngIf="imagePreview || newProduct.imageUrl" class="image-preview-container">
-          <img [src]="getPreviewImage()" alt="Apercu" class="image-preview" />
+          <img [src]="getPreviewImage()" alt="Aperçu" class="image-preview" />
           <button type="button" (click)="removeSelectedImage()" class="remove-image">x</button>
         </div>
 
@@ -109,7 +110,7 @@
     </form>
 
     <aside class="preview-card">
-      <span class="preview-chip">{{ newProduct.category || 'Categorie' }}</span>
+      <span class="preview-chip">{{ newProduct.category || 'Catégorie' }}</span>
       <div class="preview-image">
         <img *ngIf="imagePreview || newProduct.imageUrl" [src]="getPreviewImage()" alt="Preview" />
         <span *ngIf="!imagePreview && !newProduct.imageUrl" class="material-icons">local_florist</span>
@@ -148,7 +149,7 @@
             </td>
             <td>
               <span>{{ p.concentration || 'Extrait de parfum' }} - {{ p.volume || '30ml' }}</span>
-              <small>{{ p.topNotes || 'Notes non renseignees' }}</small>
+              <small>{{ p.topNotes || 'Notes non renseignées' }}</small>
             </td>
             <td>{{ p.price | currency:'MAD':'symbol':'1.0-0' }}</td>
             <td>
@@ -168,12 +169,12 @@
     <ng-template #noProducts>
       <div class="empty-state">
         <span class="material-icons">inventory_2</span>
-        <p>Aucun produit trouve.</p>
+        <p>Aucun produit trouvé.</p>
       </div>
     </ng-template>
 
     <div class="pagination" *ngIf="totalPages > 1">
-      <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">Precedent</button>
+      <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">Précédent</button>
       <span>Page {{ currentPage }} / {{ totalPages }}</span>
       <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">Suivant</button>
     </div>
