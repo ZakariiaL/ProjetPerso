@@ -1,0 +1,14 @@
+<div class="sidebar-backdrop" [class.visible]="!isClosed" (click)="closeSidebar()"></div>
+
+<aside class="sidebar-layout" [class.collapsed]="isClosed">
+  <button class="toggle-button" (click)="onClick($event)" aria-label="Menu">
+    <i class="fa-solid" [class.fa-chevron-left]="!isClosed" [class.fa-chevron-right]="isClosed"></i>
+  </button>
+
+  <nav class="content">
+    <button class="sidebar-icon" *ngFor="let menu of menus" type="button" (click)="navigate(menu.route)">
+      <i [class]="menu.icon"></i>
+      <span>{{ menu.label }}</span>
+    </button>
+  </nav>
+</aside>

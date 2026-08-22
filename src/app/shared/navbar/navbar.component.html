@@ -1,0 +1,60 @@
+<header class="navbar" [class.hidden]="isHidden">
+
+  <div class="left">
+    <button class="menu-btn" (click)="toggleSidebar()" aria-label="Ouvrir le menu">
+      <span class="material-icons">menu</span>
+    </button>
+    <a routerLink="/" class="logo">
+      <img src="assets/logo.png" alt="Logo" />
+    </a>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/">Accueil</a>
+    <a routerLink="/category/homme">Parfum Hommes</a>
+    <a routerLink="/category/femme">Parfum Femmes</a>
+    <a routerLink="/collection">Nouveautes</a>
+    <a routerLink="/suivi">Contact</a>
+    <a *ngIf="adminSession" routerLink="/admin">Admin</a>
+  </nav>
+
+  <div class="center">
+    <div class="search-wrapper" [class.active]="searchVisible || isDesktop">
+      <button class="search-icon" (click)="toggleSearch()" *ngIf="!isDesktop" aria-label="Rechercher">
+        <span class="material-icons">search</span>
+      </button>
+
+      <input
+        class="search-input"
+        type="text"
+        placeholder="Rechercher..."
+        [class.show]="searchVisible || isDesktop"
+      />
+    </div>
+  </div>
+
+  <div class="right-actions">
+    <a routerLink="/cart" class="cart-icon" aria-label="Panier">
+      <span class="material-icons">shopping_cart</span>
+      <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+    </a>
+
+    <a *ngIf="!adminSession" routerLink="/login" class="admin-action" aria-label="Espace admin">
+      <span class="material-icons">account_circle</span>
+    </a>
+
+    <button *ngIf="adminSession" type="button" class="admin-action" (click)="logout()" aria-label="Quitter l'espace admin">
+      <span class="material-icons">power_settings_new</span>
+    </button>
+  </div>
+</header>
+
+<div class="search-overlay" *ngIf="searchVisible && !isDesktop" (click)="toggleSearch()"></div>
+
+<div class="blackfriday-banner">
+  <div class="blackfriday-track">
+    <span class="blackfriday-text">
+      SOLDE !! Jusqu'a -50% sur une selection de parfums
+    </span>
+  </div>
+</div>

@@ -1,1 +1,94 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #fbfaf4;
+  color: #132f30;
+  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+.social-float {
+  position: fixed;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  z-index: 950;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  a {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+    text-decoration: none;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: translateX(-4px) scale(1.04);
+      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
+    }
+  }
+
+  .whatsapp {
+    background: #25d366;
+  }
+
+  .messenger {
+    background: #0084ff;
+  }
+
+  .instagram {
+    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
+  }
+}
+
+@media (max-width: 768px) {
+  .social-float {
+    top: auto;
+    right: 14px;
+    bottom: 16px;
+    transform: none;
+    gap: 10px;
+
+    a {
+      width: 42px;
+      height: 42px;
+      font-size: 1rem;
+    }
+  }
+}

@@ -1,0 +1,100 @@
+<section class="product-page" *ngIf="product">
+  <div class="product-gallery">
+    <a routerLink="/" class="back-link">
+      <span class="material-icons">arrow_back</span>
+      Catalogue
+    </a>
+    <div class="image-stage">
+      <span class="glow"></span>
+      <img [src]="getProductImage()" [alt]="product.name" />
+    </div>
+  </div>
+
+  <div class="product-info">
+    <div class="top-line">
+      <span class="availability" [class.out]="!product.inStock">{{ product.inStock ? 'En stock' : 'Rupture' }}</span>
+      <span class="category">{{ product.category || 'Extrait' }}</span>
+    </div>
+
+    <p class="brand">{{ product.brand || 'Mustaparfums' }}</p>
+    <h1>{{ product.name }}</h1>
+    <div class="price">{{ product.price | currency:'MAD':'symbol':'1.0-0' }}</div>
+
+    <p class="description">
+      {{ product.description || 'Un extrait de parfum intense, elegant et travaille pour accompagner votre signature au quotidien.' }}
+    </p>
+
+    <div class="feature-row">
+      <div>
+        <span class="material-icons">water_drop</span>
+        {{ product.concentration || 'Extrait de parfum' }}
+      </div>
+      <div>
+        <span class="material-icons">verified</span>
+        {{ product.volume || selectedSize }}
+      </div>
+      <div>
+        <span class="material-icons">local_shipping</span>
+        Livraison Maroc
+      </div>
+    </div>
+
+    <div class="notes-panel" *ngIf="hasNotes">
+      <h2>Pyramide olfactive</h2>
+      <div class="notes-grid">
+        <div>
+          <span>Tete</span>
+          <strong>{{ product.topNotes || '-' }}</strong>
+        </div>
+        <div>
+          <span>Coeur</span>
+          <strong>{{ product.heartNotes || '-' }}</strong>
+        </div>
+        <div>
+          <span>Fond</span>
+          <strong>{{ product.baseNotes || '-' }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="size">
+      <label>Format</label>
+      <div class="size-options">
+        <button type="button" [class.selected]="selectedSize === '30ml'" (click)="selectSize('30ml')">30ml</button>
+        <button type="button" [class.selected]="selectedSize === '50ml'" (click)="selectSize('50ml')">50ml</button>
+        <button type="button" [class.selected]="selectedSize === '100ml'" (click)="selectSize('100ml')">100ml</button>
+      </div>
+    </div>
+
+    <div class="quantity">
+      <label>Quantite</label>
+      <div class="qty-controls">
+        <button type="button" (click)="decrease()">-</button>
+        <span>{{ quantity }}</span>
+        <button type="button" (click)="increase()">+</button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="add-to-cart" (click)="addToCart()" [disabled]="!product.inStock">
+        <span class="material-icons">shopping_bag</span>
+        Ajouter au panier
+      </button>
+      <button class="buy-now" (click)="buyNow()" [disabled]="!product.inStock">
+        Commander
+      </button>
+    </div>
+
+    <div class="order-form" *ngIf="showOrderForm">
+      <h3>Finaliser la commande</h3>
+
+      <label>Nom complet</label>
+      <input type="text" [(ngModel)]="clientName" placeholder="Votre nom" />
+
+      <label>Numero WhatsApp</label>
+      <input type="tel" [(ngModel)]="clientPhone" placeholder="Ex: +212600000000" />
+
+      <button type="button" (click)="sendOrderByEmail()">Envoyer ma commande</button>
+    </div>
+  </div>
+</section>

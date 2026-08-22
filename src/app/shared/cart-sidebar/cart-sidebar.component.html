@@ -1,0 +1,14 @@
+<div class="sidebar" [class.open]="cartService.sidebarOpen">
+    <button class="close-btn" (click)="closeSidebar()">✕</button>
+    <div *ngFor="let product of cart" class="item">
+      <img [src]="product.imageUrl" />
+      <div>
+        <h4>{{ product.name }}</h4>
+        <p>{{ product.price | currency:'EUR' }}</p>
+      </div>
+    </div>
+    <div class="total">
+      Total : {{ total() | currency:'EUR' }}
+    </div>
+  </div>
+  
