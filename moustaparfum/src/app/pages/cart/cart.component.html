@@ -1,20 +1,33 @@
-<h2>🛒 Votre panier</h2>
+<section class="cart-page">
+  <div class="cart-heading">
+    <p>Panier</p>
+    <h1>Votre selection</h1>
+  </div>
 
-<div *ngIf="cart.length === 0" class="empty">
-  Votre panier est vide.
-</div>
+  <div *ngIf="cart.length === 0" class="empty">
+    <span class="material-icons">shopping_bag</span>
+    <h2>Votre panier est vide</h2>
+    <p>Ajoutez vos parfums preferes et retrouvez-les ici.</p>
+    <a routerLink="/">Explorer le catalogue</a>
+  </div>
 
-<div class="cart-container" *ngIf="cart.length > 0">
-  <div class="cart-item" *ngFor="let product of cart">
-    <img [src]="product.imageUrl" alt="{{ product.name }}" />
-    <div class="details">
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.price | currency:'EUR' }}</p>
+  <div class="cart-layout" *ngIf="cart.length > 0">
+    <div class="cart-list">
+      <article class="cart-item" *ngFor="let product of cart">
+        <img [src]="getProductImage(product)" alt="{{ product.name }}" />
+        <div class="details">
+          <span>{{ product.brand || 'Mustaparfums' }}</span>
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.price | currency:'MAD':'symbol':'1.0-0' }}</p>
+        </div>
+      </article>
     </div>
-  </div>
 
-  <hr />
-  <div class="cart-total">
-    <h3>Total : {{ total() | currency:'EUR' }}</h3>
+    <aside class="cart-summary">
+      <span>Total</span>
+      <strong>{{ total() | currency:'MAD':'symbol':'1.0-0' }}</strong>
+      <p>La finalisation se fait par contact direct afin de confirmer disponibilite et livraison.</p>
+      <a href="https://wa.me/212600000000" target="_blank">Commander via WhatsApp</a>
+    </aside>
   </div>
-</div>
+</section>

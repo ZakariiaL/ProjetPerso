@@ -1,0 +1,54 @@
+<section class="login-page">
+  <div class="login-panel">
+    <div class="login-header">
+      <span class="material-icons">admin_panel_settings</span>
+      <div>
+        <p class="eyebrow">Espace admin</p>
+        <h1>Connexion</h1>
+      </div>
+    </div>
+
+    <form class="login-form" (ngSubmit)="login()" #loginForm="ngForm">
+      <label>
+        Identifiant
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="username"
+          autocomplete="username"
+          placeholder="admin"
+          required
+        />
+      </label>
+
+      <label>
+        Mot de passe
+        <div class="password-field">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            [(ngModel)]="password"
+            autocomplete="current-password"
+            placeholder="admin123"
+            required
+          />
+          <button type="button" (click)="showPassword = !showPassword" aria-label="Afficher le mot de passe">
+            <span class="material-icons">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+          </button>
+        </div>
+      </label>
+
+      <div *ngIf="error" class="login-error">{{ error }}</div>
+
+      <button class="login-submit" type="submit" [disabled]="loading">
+        <span class="material-icons">login</span>
+        {{ loading ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+
+    <a routerLink="/" class="back-link">
+      <span class="material-icons">arrow_back</span>
+      Retour au site
+    </a>
+  </div>
+</section>

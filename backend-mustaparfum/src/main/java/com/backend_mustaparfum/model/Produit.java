@@ -17,6 +17,11 @@ public class Produit {
     private String imageUrl;
     private double price;
     private boolean inStock;
+    private String concentration;
+    private String volume;
+    private String topNotes;
+    private String heartNotes;
+    private String baseNotes;
 
 
 
@@ -84,6 +89,46 @@ public class Produit {
 
     public void setInStock(boolean inStock) {
         this.inStock = inStock;
+    }
+
+    public String getConcentration() {
+        return concentration;
+    }
+
+    public void setConcentration(String concentration) {
+        this.concentration = concentration;
+    }
+
+    public String getVolume() {
+        return volume;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
+    }
+
+    public String getTopNotes() {
+        return topNotes;
+    }
+
+    public void setTopNotes(String topNotes) {
+        this.topNotes = topNotes;
+    }
+
+    public String getHeartNotes() {
+        return heartNotes;
+    }
+
+    public void setHeartNotes(String heartNotes) {
+        this.heartNotes = heartNotes;
+    }
+
+    public String getBaseNotes() {
+        return baseNotes;
+    }
+
+    public void setBaseNotes(String baseNotes) {
+        this.baseNotes = baseNotes;
     }
 
 

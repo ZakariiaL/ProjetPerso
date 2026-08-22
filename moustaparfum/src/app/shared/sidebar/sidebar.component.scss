@@ -1,148 +1,95 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Saira+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap");
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: rgba(0, 20, 20, 0.34);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 .sidebar-layout {
-  background-color: #003334da;
-  color: #fdd835b9;
-  width: 10vw;
-  min-width: 120px;
-  height: 95vh;                   // ✅ couvre tout l’écran
+  width: 290px;
+  height: 100vh;
   position: fixed;
   top: 0;
-  left: -1vw;
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
-  transition: width 0.3s ease;     // ✅ animation plus fluide et rapide
-  box-shadow: 0 12px 30px rgba(8, 8, 8, 0.87);
-  border-right: solid 0.5pc #53350750;
-
-  padding-top: 4.5rem;             // ✅ espace sous la navbar
+  left: 0;
+  z-index: 999;
+  padding: 108px 18px 24px;
+  box-sizing: border-box;
+  background: rgba(0, 51, 52, 0.96);
+  color: #fdd835;
+  box-shadow: 18px 0 50px rgba(0, 0, 0, 0.28);
+  transform: translateX(0);
+  transition: transform 0.32s ease;
 }
-
 
 .sidebar-layout.collapsed {
-  width: 5vw;
+  transform: translateX(-100%);
 }
-
-
-.logo {
-  text-align: center;
-  margin: 1vh 0;
-}
-.logo img {
-  max-width: 90%;
-  max-height: 7vh;
-  object-fit: contain;
-  transition: transform 0.5s ease-in-out;
-}
-.logo img.rotated {
-  transform: rotate(180deg);
-}
-
 
 .toggle-button {
   position: absolute;
-  right: -12px;
-  top: 5vh;
-  background-color: #fdd835b9;
-  border: none; // ❌ enlever le double border
-  padding: 0.4rem 0.6rem;
+  top: 108px;
+  right: -42px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 0 8px 8px 0;
+  background: #fdd835;
+  color: #003334;
   cursor: pointer;
-  font-size: clamp(16px, 1.4vw, 20px);
-  z-index: 1001;
-  border-radius: 0 5px 5px 0;
-  color: black; // ✅ la flèche en noir
-  transition: background-color 0.3s ease;
-  margin-top: 3vw;
-
-  &:hover {
-    background-color: #fce84d; // ✅ un peu plus clair au hover
-  }
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
-
-
 
 .content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1vh 0.5vw;
-  display: flex;
-  flex-direction: column;
-  gap: 3vh;
-  margin-top: 7vw;
-  
+  display: grid;
+  gap: 8px;
 }
-
 
 .sidebar-icon {
+  min-height: 50px;
+  width: 100%;
+  border: 1px solid rgba(253, 216, 53, 0.1);
+  border-radius: 8px;
+  background: transparent;
+  color: #fdd835;
   display: flex;
   align-items: center;
-  padding: 1vh 1vw;
+  gap: 12px;
+  padding: 0 14px;
   cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  flex-shrink: 0;
-}
+  text-align: left;
+  font: inherit;
+  transition: background 0.22s ease, transform 0.22s ease;
 
-.sidebar-icon:hover {
-  background-color: #333333;
-}
-
-.sidebar-icon i {
-  font-size: clamp(20px, 2.5vw, 28px); 
-  width: clamp(24px, 2vw, 30px);
-  text-align: center;
-}
-
-.sidebar-icon span {
-  font-size: clamp(18px, 2.1vw, 22px);
-  font-family: "Saira Condensed", sans-serif;
-  margin-left: clamp(10px, 1vw, 20px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-
-.collapsed .sidebar-icon span {
-  display: none;
-}
-
-
-.main-content {
-  margin-left: 12vw;
-  padding: 2vh 2vw;
-  transition: margin-left 0.5s ease;
-}
-.sidebar-layout.collapsed + .main-content {
-  margin-left: 4vw;
-}
-
-
-
-@media screen and (max-width: 1400px ){
-
-  .sidebar-layout {
-    width: 13vw; 
+  &:hover {
+    background: rgba(253, 216, 53, 0.12);
+    transform: translateX(4px);
   }
 
+  i {
+    width: 24px;
+    text-align: center;
+  }
+
+  span {
+    font-weight: 800;
+  }
 }
-@media screen and (max-width: 850px){
 
-
+@media (max-width: 760px) {
   .sidebar-layout {
-    
-    width: 25vw; 
-    min-width: 80px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-    transition: width 1s ease;
-    box-shadow: 0 12px 30px rgba(8, 8, 8, 0.87),
-                0 17px 50px rgba(0, 0, 0, 0.19);
+    width: min(84vw, 310px);
+    padding-top: 96px;
+  }
+
+  .toggle-button {
+    top: 96px;
   }
 }

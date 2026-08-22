@@ -1,28 +1,102 @@
-<!-- ✅ Desktop -->
-<div class="product-list" *ngIf="!isMobile">
-  <div
-    class="product-card"
-    *ngFor="let product of products"
-    [routerLink]="['/product', product.id]"
-  >
-  <img [src]="'http://localhost:9095' + product.imageUrl" alt="{{ product.name }}" />
-
-    <h3>{{ product.name }}</h3>
-    <p class="price">{{ product.price | currency: 'EUR' }}</p>
-  </div>
-</div>
-
-<!-- ✅ Mobile - horizontal carousel 2x2 -->
-<div class="mobile-carousel" *ngIf="isMobile">
-  <div
-    class="carousel-slide"
-    *ngFor="let group of groupedProducts"
-  >
-    <div class="product-card" *ngFor="let product of group" [routerLink]="['/product', product.id]">
-      <img [src]="'http://localhost:8080' + product.imageUrl" alt="{{ product.name }}" />
-
-      <h3>{{ product.name }}</h3>
-      <p class="price">{{ product.price | currency: 'EUR' }}</p>
+<section class="home-page">
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Extraits de parfum</p>
+      <h1>Une signature intense, elegante et durable.</h1>
+      <p class="hero-text">
+        Decouvrez une selection de parfums concentres, choisis pour laisser un sillage propre, moderne et memorable.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/" class="primary-action">Explorer</a>
+        <a routerLink="/category/femme" class="secondary-action">Collection femme</a>
+      </div>
+      <div class="hero-stats">
+        <span><strong>30ml</strong> format signature</span>
+        <span><strong>24/48h</strong> livraison Maroc</span>
+        <span><strong>Premium</strong> inspirations</span>
+      </div>
     </div>
-  </div>
-</div>
+
+    <div class="hero-visual" *ngIf="featuredProduct">
+      <div class="bottle-stage">
+        <img [src]="getProductImage(featuredProduct)" [alt]="featuredProduct.name" />
+      </div>
+      <div class="hero-product">
+        <span>{{ featuredProduct.brand || 'Mustaparfums' }}</span>
+        <strong>{{ featuredProduct.name }}</strong>
+        <small>{{ featuredProduct.price | currency:'MAD':'symbol':'1.0-0' }}</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="category-strip">
+    <a routerLink="/" [class.active]="!activeCategory">
+      <span class="material-icons">auto_awesome</span>
+      Tous
+    </a>
+    <a routerLink="/category/homme" [class.active]="activeCategory === 'homme'">
+      <span class="material-icons">male</span>
+      Homme
+    </a>
+    <a routerLink="/category/femme" [class.active]="activeCategory === 'femme'">
+      <span class="material-icons">female</span>
+      Femme
+    </a>
+    <a routerLink="/category/unisex" [class.active]="activeCategory === 'unisex'">
+      <span class="material-icons">diversity_1</span>
+      Unisex
+    </a>
+  </section>
+
+  <section class="catalog-header">
+    <div>
+      <p class="eyebrow">{{ activeCategory ? 'Collection parfumee' : 'Les favoris de nos clients' }}</p>
+      <h2>{{ activeCategory ? ('Parfums ' + activeCategory) : 'Produits les plus vendus' }}</h2>
+    </div>
+    <p>{{ products.length }} parfum{{ products.length > 1 ? 's' : '' }} disponible{{ products.length > 1 ? 's' : '' }}</p>
+  </section>
+
+  <section class="product-grid" *ngIf="products.length > 0; else emptyCatalog">
+    <article
+      class="product-card"
+      *ngFor="let product of products; trackBy: trackByProductId"
+      [routerLink]="['/product', product.id]"
+    >
+      <div class="product-media">
+        <div class="product-badges">
+          <span class="sale-chip">Must</span>
+          <span class="stock-chip" [class.out]="!product.inStock">
+            {{ product.inStock ? 'En stock' : 'Sold out' }}
+          </span>
+        </div>
+        <button class="wishlist-btn" type="button" aria-label="Ajouter aux favoris" (click)="$event.stopPropagation()">
+          <span class="material-icons">favorite_border</span>
+        </button>
+        <img [src]="getProductImage(product)" [alt]="product.name" />
+        <button class="quick-cart" type="button" (click)="addToCart($event, product)" [disabled]="!product.inStock">
+          {{ product.inStock ? 'Ajouter au panier' : 'Lire la suite' }}
+        </button>
+      </div>
+
+      <div class="product-content">
+        <span>{{ getProductMeta(product) }}</span>
+        <h3>{{ product.name }}</h3>
+        <p>{{ getProductNotes(product) }}</p>
+        <div class="product-bottom">
+          <strong>{{ product.price | currency:'MAD':'symbol':'1.0-0' }}</strong>
+          <button type="button" (click)="addToCart($event, product)" [disabled]="!product.inStock" aria-label="Ajouter au panier">
+            <span class="material-icons">add_shopping_cart</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <ng-template #emptyCatalog>
+    <section class="empty-catalog">
+      <span class="material-icons">inventory_2</span>
+      <h2>Aucun parfum trouve</h2>
+      <p>Revenez bientot, la collection est en preparation.</p>
+    </section>
+  </ng-template>
+</section>

@@ -29,7 +29,16 @@ public class ProduitService {
         return repository.findById(id).map(produit -> {
             produit.setName(produitDetails.getName());
             produit.setDescription(produitDetails.getDescription());
+            produit.setBrand(produitDetails.getBrand());
+            produit.setCategory(produitDetails.getCategory());
+            produit.setImageUrl(produitDetails.getImageUrl());
             produit.setPrice(produitDetails.getPrice());
+            produit.setInStock(produitDetails.isInStock());
+            produit.setConcentration(produitDetails.getConcentration());
+            produit.setVolume(produitDetails.getVolume());
+            produit.setTopNotes(produitDetails.getTopNotes());
+            produit.setHeartNotes(produitDetails.getHeartNotes());
+            produit.setBaseNotes(produitDetails.getBaseNotes());
             return repository.save(produit);
         });
     }
