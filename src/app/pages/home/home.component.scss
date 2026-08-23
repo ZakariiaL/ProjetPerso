@@ -584,6 +584,7 @@
 }
 
 .product-card {
+  min-width: 0;
   min-height: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
@@ -735,6 +736,7 @@
 .product-category,
 .product-volume {
   width: fit-content;
+  box-sizing: border-box;
   min-width: 0;
   border-radius: 999px;
   font-family: var(--font-card);
@@ -1160,6 +1162,7 @@
   }
 
   .product-card {
+    min-width: 0;
     min-height: 100%;
     grid-template-columns: none;
     grid-template-rows: auto 1fr;
@@ -1201,8 +1204,9 @@
   }
 
   .product-meta-row {
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
     gap: 6px;
   }
 
@@ -1212,6 +1216,7 @@
   }
 
   .product-category {
+    width: 100%;
     padding: 4px 7px;
     max-width: 100%;
     overflow: hidden;
@@ -1220,6 +1225,7 @@
   }
 
   .product-volume {
+    width: fit-content;
     padding: 4px 7px;
   }
 
@@ -1256,10 +1262,11 @@
 
   .product-bottom {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 38px;
+    grid-template-columns: minmax(0, 1fr) 34px;
     gap: 8px;
     margin-top: auto;
     padding-top: 9px;
+    padding-right: 4px;
     align-items: center;
   }
 
@@ -1281,11 +1288,12 @@
   }
 
   .product-bottom button {
-    min-width: 38px;
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
-    justify-self: end;
+    min-width: 34px;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    justify-self: center;
+    box-sizing: border-box;
     padding: 0;
     border: 1px solid rgba(0, 51, 52, 0.08);
     border-radius: 50%;
@@ -1394,11 +1402,11 @@
   }
 
   .product-bottom button {
-    min-width: 38px;
-    width: 38px;
-    height: 38px;
-    flex-basis: 38px;
-    justify-self: end;
+    min-width: 34px;
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+    justify-self: center;
     padding: 0;
 
     span:not(.material-icons) {
@@ -1477,10 +1485,10 @@
   }
 
   .product-bottom button {
-    min-width: 34px;
-    width: 34px;
-    height: 34px;
-    flex-basis: 34px;
-    justify-self: end;
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+    justify-self: center;
   }
 }

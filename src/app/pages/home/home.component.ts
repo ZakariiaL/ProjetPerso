@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private bannerTimerId: ReturnType<typeof setInterval> | null = null;
   private readonly fallbackImage = 'assets/parfums/p1.png';
+  private readonly assetVersion = '20260823-1';
   private resizeListener = () => {
     this.isMobile = window.innerWidth < 768;
   };
@@ -226,7 +227,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       : '/';
     const normalizedBase = baseHref.endsWith('/') ? baseHref : `${baseHref}/`;
     const normalizedPath = path.replace(/^\/+/, '');
-    return `${normalizedBase}${normalizedPath}`;
+    const separator = normalizedPath.includes('?') ? '&' : '?';
+    return `${normalizedBase}${normalizedPath}${separator}v=${this.assetVersion}`;
   }
 
   handleImageError(event: Event): void {
