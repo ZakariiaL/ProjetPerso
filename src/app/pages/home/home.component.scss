@@ -836,10 +836,12 @@
     grid-template-columns: 1fr;
     min-height: auto;
     padding-top: 28px;
+    gap: 28px;
   }
 
   .hero-visual {
-    min-height: 430px;
+    min-height: 360px;
+    overflow: hidden;
   }
 
   .product-grid {
@@ -862,10 +864,16 @@
   .hero {
     gap: 22px;
     padding-top: 12px;
+    align-items: start;
+    isolation: isolate;
 
     &::before {
       display: none;
     }
+  }
+
+  .hero-copy {
+    z-index: 3;
   }
 
   .hero-copy h1 {
@@ -881,14 +889,28 @@
   }
 
   .hero-visual {
-    min-height: 260px;
+    z-index: 1;
+    width: 100%;
+    min-height: 250px;
+    margin-top: 8px;
+    overflow: hidden;
+
+    &::before {
+      width: min(250px, 66vw);
+    }
+
+    &::after {
+      bottom: 22px;
+      width: min(190px, 52vw);
+      height: 42px;
+    }
   }
 
   .bottle-stage {
-    width: min(240px, 68vw);
+    width: min(220px, 62vw);
 
     img {
-      max-height: 230px;
+      max-height: 210px;
     }
   }
 
