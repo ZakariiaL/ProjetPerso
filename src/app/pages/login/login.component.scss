@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   padding: 120px 20px 40px;
+  font-family: var(--font-ui);
   background:
     linear-gradient(rgba(0, 51, 52, 0.82), rgba(0, 51, 52, 0.72)),
     url('/assets/logo.png') center 90px / 340px auto no-repeat,
@@ -43,7 +44,8 @@
 
   h1 {
     font-size: 2rem;
-    font-family: "Alumni Sans SC", sans-serif;
+    font-family: var(--font-heading);
+    line-height: 1.05;
   }
 }
 
@@ -62,7 +64,7 @@
     display: grid;
     gap: 8px;
     color: #273536;
-    font-weight: 600;
+    font-weight: 650;
   }
 
   input {

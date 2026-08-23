@@ -4,6 +4,7 @@
     #003334;
   color: #fff;
   padding: 56px 20px 18px;
+  font-family: var(--font-ui);
 
   .footer-benefits {
     width: min(1180px, 100%);
@@ -43,8 +44,8 @@
       margin: 0 0 7px;
       color: #fff8d6;
       font-size: 0.88rem;
-      font-weight: 900;
-      letter-spacing: 0.04em;
+      font-weight: 700;
+      letter-spacing: 0.02em;
       line-height: 1.25;
       text-transform: uppercase;
     }
@@ -71,6 +72,7 @@
     h4 {
       margin: 0 0 1rem;
       font-size: 1rem;
+      font-weight: 700;
       color: #ffffff;
 
       &::after {
@@ -94,6 +96,7 @@
         a {
           text-decoration: none;
           color: rgba(255, 255, 255, 0.72);
+          font-weight: 500;
           transition: color 0.25s ease;
 
           &:hover {
@@ -162,7 +165,9 @@
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.6);
     text-align: center;
-    font-size: 0.88rem;
+    font-family: var(--font-footer-signature);
+    font-size: 1rem;
+    font-weight: 600;
   }
 }
 
@@ -180,7 +185,7 @@
 
 @media (max-width: 620px) {
   .footer {
-    padding: 42px 16px 18px;
+    padding: 30px 14px 16px;
 
     .footer-container {
       grid-template-columns: 1fr;
@@ -188,11 +193,32 @@
     }
 
     .footer-benefits {
-      grid-template-columns: 1fr;
-      margin-bottom: 34px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 24px;
 
       article {
         min-height: auto;
+        align-items: center;
+        gap: 8px;
+        padding: 10px;
+      }
+
+      .material-icons {
+        width: 30px;
+        height: 30px;
+        flex-basis: 30px;
+        font-size: 1rem;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 0.68rem;
+        line-height: 1.2;
+      }
+
+      p {
+        display: none;
       }
     }
 
@@ -200,10 +226,23 @@
       display: none;
     }
 
+    .footer-col:first-child {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .footer-logo,
     .footer-text,
     .footer-bottom {
       text-align: center;
+    }
+
+    .footer-logo {
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+      align-self: center;
     }
 
     .footer-socials {

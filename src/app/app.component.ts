@@ -19,9 +19,7 @@ import { Product } from './models/product.model';
     FooterComponent,
     SidebarComponent,
     CartSidebarComponent,
-    SidebarComponent,
     RouterOutlet,
-   
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

@@ -2,6 +2,7 @@ import {
   Component,
   Output,
   EventEmitter,
+  Input,
   OnInit,
   HostListener
 } from '@angular/core';
@@ -19,6 +20,7 @@ import { isBrowser } from '../../utils/platform';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  @Input() sidebarOpen = false;
   @Output() menuClicked = new EventEmitter<void>();
 
   cartCount = 0;
@@ -29,6 +31,7 @@ export class NavbarComponent implements OnInit {
 
   lastScrollTop = 0;
   isHidden = false;
+  isScrolled = false;
 
   constructor(
     private cartService: CartService,
@@ -64,6 +67,7 @@ export class NavbarComponent implements OnInit {
 
     if (Math.abs(currentScroll - this.lastScrollTop) < 5) return;
 
+    this.isScrolled = currentScroll > 80;
     this.isHidden = currentScroll > this.lastScrollTop && currentScroll > 100;
     this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   }

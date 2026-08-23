@@ -32,7 +32,7 @@
   backdrop-filter: blur(18px) saturate(1.18);
   transform: translateX(0);
   transition: transform 0.32s ease, box-shadow 0.32s ease;
-  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-family: var(--font-sidebar);
 }
 
 .sidebar-layout.collapsed {
@@ -67,18 +67,29 @@
     transform: translateX(4px);
   }
 
-  i {
+  &.active {
+    background: #fdd835;
+    color: #003334;
+    border-color: #fdd835;
+
+    .material-icons,
+    span {
+      color: #003334;
+    }
+  }
+
+  .material-icons {
     width: 26px;
     text-align: center;
     color: #fff8d6;
     font-size: 1.05rem;
   }
 
-  span {
+  span:not(.material-icons) {
     color: #fff6c2;
-    font-size: 0.96rem;
-    font-weight: 800;
-    letter-spacing: 0.01em;
+    font-size: 0.92rem;
+    font-weight: 650;
+    letter-spacing: 0;
   }
 }
 

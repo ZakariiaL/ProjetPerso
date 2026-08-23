@@ -1,0 +1,121 @@
+<section class="contact-page">
+  <header class="contact-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Contact Moustaparfum</p>
+      <h1>Un parfum, une question, une commande.</h1>
+      <p>
+        Écris-nous ton besoin et on te répond avec une recommandation claire, adaptée à ton style,
+        ton budget et ton occasion.
+      </p>
+
+      <div class="hero-actions">
+        <a [href]="whatsappUrl" target="_blank" rel="noopener" class="primary-link">
+          <span class="material-icons">chat</span>
+          WhatsApp direct
+        </a>
+        <a href="tel:+212600000000" class="secondary-link">
+          <span class="material-icons">call</span>
+          Appeler
+        </a>
+      </div>
+    </div>
+
+    <aside class="contact-card">
+      <span class="material-icons">storefront</span>
+      <h2>Boutique à Laâyoune</h2>
+      <p>Conseil parfum, disponibilité, livraison et suivi de commande.</p>
+      <div>
+        <strong>Horaires</strong>
+        <span>Lun - Sam : 10h00 - 20h00</span>
+      </div>
+    </aside>
+  </header>
+
+  <section class="contact-grid">
+    <article *ngFor="let card of contactCards">
+      <span class="material-icons">{{ card.icon }}</span>
+      <h2>{{ card.title }}</h2>
+      <p>{{ card.text }}</p>
+    </article>
+  </section>
+
+  <section class="contact-workspace">
+    <form class="contact-form" (ngSubmit)="sendMessage()">
+      <div class="form-heading">
+        <p class="eyebrow">Message rapide</p>
+        <h2>Préparer ma demande</h2>
+      </div>
+
+      <div class="form-row">
+        <label>
+          Nom complet *
+          <input [(ngModel)]="form.name" name="name" type="text" placeholder="Votre nom" />
+          <small *ngIf="submitted && !form.name.trim()">Le nom est obligatoire.</small>
+        </label>
+
+        <label>
+          Téléphone *
+          <input [(ngModel)]="form.phone" name="phone" type="tel" placeholder="+212 6..." />
+          <small *ngIf="submitted && !form.phone.trim()">Le téléphone est obligatoire.</small>
+        </label>
+      </div>
+
+      <div class="form-row">
+        <label>
+          Sujet *
+          <select [(ngModel)]="form.subject" name="subject">
+            <option *ngFor="let subject of subjects" [value]="subject">{{ subject }}</option>
+          </select>
+        </label>
+
+        <label>
+          Canal préféré
+          <select [(ngModel)]="form.channel" name="channel">
+            <option value="whatsapp">WhatsApp</option>
+            <option value="phone">Appel téléphonique</option>
+            <option value="instagram">Instagram</option>
+          </select>
+        </label>
+      </div>
+
+      <label>
+        Message *
+        <textarea
+          [(ngModel)]="form.message"
+          name="message"
+          rows="6"
+          placeholder="Ex. Je cherche un parfum élégant pour homme, longue tenue, budget autour de 150 MAD."
+        ></textarea>
+        <small *ngIf="submitted && !form.message.trim()">Écris ton message avant l’envoi.</small>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit">
+          <span class="material-icons">send</span>
+          Envoyer sur WhatsApp
+        </button>
+        <button type="button" class="ghost" (click)="resetForm()">Réinitialiser</button>
+      </div>
+    </form>
+
+    <aside class="contact-side">
+      <div class="quick-contact">
+        <h2>Réponse rapide</h2>
+        <p>Pour une commande urgente, WhatsApp reste le canal le plus rapide.</p>
+        <a [href]="whatsappUrl" target="_blank" rel="noopener">
+          <span class="material-icons">forum</span>
+          Ouvrir WhatsApp
+        </a>
+      </div>
+
+      <div class="map-panel">
+        <iframe
+          title="Moustaparfum à Laâyoune"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d843580.2645535783!2d-13.50698772626722!3d27.121192290888683!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd77a6d39a52b6d5%3A0x2f6e1cb14b9863f4!2sLa%C3%A2youne!5e0!3m2!1sfr!2sma"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </aside>
+  </section>
+</section>

@@ -7,6 +7,7 @@ import { Product } from '../../models/product.model';
 import { CurrencyPipe, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import emailjs from 'emailjs-com';
+import { isBrowser } from '../../utils/platform';
 
 @Component({
   selector: 'app-product-detail',
@@ -21,7 +22,6 @@ export class ProductDetailComponent implements OnInit {
   showOrderForm = false;
   clientName = '';
   clientPhone = '';
-  selectedSize = '30ml';
 
   constructor(
     private route: ActivatedRoute,
@@ -30,9 +30,17 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.productService.getById(id).subscribe(prod => {
-      this.product = prod;
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+
+      if (isBrowser()) {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
+
+      this.productService.getById(id).subscribe(prod => {
+        this.product = prod;
+        this.quantity = 1;
+      });
     });
   }
 
@@ -55,10 +63,6 @@ export class ProductDetailComponent implements OnInit {
     this.showOrderForm = true;
   }
 
-  selectSize(size: string): void {
-    this.selectedSize = size;
-  }
-
   getProductImage(): string {
     if (!this.product?.imageUrl) {
       return 'assets/parfums/p1.png';
@@ -71,8 +75,10 @@ export class ProductDetailComponent implements OnInit {
     return `http://localhost:9095${this.product.imageUrl}`;
   }
 
-  get hasNotes(): boolean {
-    return !!(this.product?.topNotes || this.product?.heartNotes || this.product?.baseNotes);
+  getProductFormat(): string {
+    const concentration = this.product?.concentration?.trim() || 'Extrait de parfum';
+    const volume = this.product?.volume?.trim() || '30ml';
+    return `${concentration} / ${volume}`;
   }
 
   sendOrderByEmail(): void {
@@ -86,7 +92,7 @@ export class ProductDetailComponent implements OnInit {
       client_phone: this.clientPhone,
       product_name: this.product.name,
       product_qty: this.quantity,
-      product_size: this.selectedSize
+      product_size: this.product.volume || '30ml'
     };
 
     emailjs.send('service_kcuy57s', 'template_h29lscf', templateParams, 'wB9UpjweMbFN404_6')

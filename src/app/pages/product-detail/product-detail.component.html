@@ -31,7 +31,7 @@
       </div>
       <div>
         <span class="material-icons">verified</span>
-        {{ product.volume || selectedSize }}
+        {{ product.volume || '30ml' }}
       </div>
       <div>
         <span class="material-icons">local_shipping</span>
@@ -39,30 +39,11 @@
       </div>
     </div>
 
-    <div class="notes-panel" *ngIf="hasNotes">
-      <h2>Pyramide olfactive</h2>
-      <div class="notes-grid">
-        <div>
-          <span>Tête</span>
-          <strong>{{ product.topNotes || '-' }}</strong>
-        </div>
-        <div>
-          <span>Cœur</span>
-          <strong>{{ product.heartNotes || '-' }}</strong>
-        </div>
-        <div>
-          <span>Fond</span>
-          <strong>{{ product.baseNotes || '-' }}</strong>
-        </div>
-      </div>
-    </div>
-
     <div class="size">
-      <label>Format</label>
-      <div class="size-options">
-        <button type="button" [class.selected]="selectedSize === '30ml'" (click)="selectSize('30ml')">30ml</button>
-        <button type="button" [class.selected]="selectedSize === '50ml'" (click)="selectSize('50ml')">50ml</button>
-        <button type="button" [class.selected]="selectedSize === '100ml'" (click)="selectSize('100ml')">100ml</button>
+      <label>Format du produit</label>
+      <div class="format-card">
+        <span class="material-icons">straighten</span>
+        <strong>{{ getProductFormat() }}</strong>
       </div>
     </div>
 

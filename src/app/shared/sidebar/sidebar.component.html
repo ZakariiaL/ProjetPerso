@@ -2,8 +2,14 @@
 
 <aside class="sidebar-layout" [class.collapsed]="isClosed">
   <nav class="content">
-    <button class="sidebar-icon" *ngFor="let menu of menus" type="button" (click)="navigate(menu.route)">
-      <i [class]="menu.icon"></i>
+    <button
+      class="sidebar-icon"
+      *ngFor="let menu of menus"
+      type="button"
+      [class.active]="isActive(menu.route)"
+      (click)="navigate(menu.route)"
+    >
+      <span class="material-icons">{{ menu.icon }}</span>
       <span>{{ menu.label }}</span>
     </button>
   </nav>

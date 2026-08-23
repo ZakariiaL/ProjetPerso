@@ -1,14 +1,16 @@
 <div class="sidebar" [class.open]="cartService.sidebarOpen">
-    <button class="close-btn" (click)="closeSidebar()">✕</button>
-    <div *ngFor="let product of cart" class="item">
-      <img [src]="product.imageUrl" />
-      <div>
-        <h4>{{ product.name }}</h4>
-        <p>{{ product.price | currency:'EUR' }}</p>
-      </div>
-    </div>
-    <div class="total">
-      Total : {{ total() | currency:'EUR' }}
+  <button class="close-btn" type="button" (click)="closeSidebar()" aria-label="Fermer le panier">×</button>
+
+  <div *ngFor="let item of cart" class="item">
+    <img [src]="item.product.imageUrl" [alt]="item.product.name" />
+    <div>
+      <h4>{{ item.product.name }}</h4>
+      <small>{{ getProductFormat(item.product) }}</small>
+      <p>{{ item.quantity }} × {{ item.product.price | currency:'MAD':'symbol':'1.0-0' }}</p>
     </div>
   </div>
-  
+
+  <div class="total">
+    Total : {{ total() | currency:'MAD':'symbol':'1.0-0' }}
+  </div>
+</div>

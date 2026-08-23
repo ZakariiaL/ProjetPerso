@@ -1,20 +1,21 @@
-<header class="navbar" [class.hidden]="isHidden">
-
+<header class="navbar" [class.hidden]="isHidden" [class.scrolled]="isScrolled" [class.sidebar-open]="sidebarOpen">
   <div class="left">
     <button class="menu-btn" (click)="toggleSidebar()" aria-label="Ouvrir le menu">
-      <span class="material-icons">menu</span>
+      <span class="material-icons">{{ sidebarOpen ? 'close' : 'menu' }}</span>
     </button>
     <a routerLink="/" class="logo">
-      <img src="assets/logo.png" alt="Logo" />
+      <img src="assets/logo.png" alt="Moustaparfum" />
     </a>
   </div>
 
   <nav class="nav-links">
     <a routerLink="/">Accueil</a>
-    <a routerLink="/category/homme">Parfums hommes</a>
-    <a routerLink="/category/femme">Parfums femmes</a>
+    <a routerLink="/category/homme">Hommes</a>
+    <a routerLink="/category/femme">Femmes</a>
+    <a routerLink="/category/niche">Niche</a>
+    <a routerLink="/category/ambiances">Ambiances</a>
     <a routerLink="/collection">Nouveautés</a>
-    <a routerLink="/suivi">Contact</a>
+    <a routerLink="/contact">Contact</a>
     <a *ngIf="adminSession" routerLink="/admin">Admin</a>
   </nav>
 
@@ -39,11 +40,34 @@
       <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
     </a>
 
-    <a *ngIf="!adminSession" routerLink="/login" class="admin-action" aria-label="Espace admin">
+    <a
+      *ngIf="!adminSession"
+      routerLink="/login"
+      class="admin-action"
+      aria-label="Espace administrateur"
+      title="Espace administrateur"
+    >
       <span class="material-icons">account_circle</span>
     </a>
 
-    <button *ngIf="adminSession" type="button" class="admin-action" (click)="logout()" aria-label="Quitter l'espace admin">
+    <a
+      *ngIf="adminSession"
+      routerLink="/admin"
+      class="admin-action admin-dashboard-link"
+      aria-label="Retour au tableau de bord admin"
+      title="Retour au tableau de bord admin"
+    >
+      <span class="material-icons">space_dashboard</span>
+    </a>
+
+    <button
+      *ngIf="adminSession"
+      type="button"
+      class="admin-action"
+      (click)="logout()"
+      aria-label="Se déconnecter de l'espace administrateur"
+      title="Se déconnecter de l'espace administrateur"
+    >
       <span class="material-icons">power_settings_new</span>
     </button>
   </div>

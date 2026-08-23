@@ -2,17 +2,37 @@
   box-sizing: border-box;
 }
 
+:root {
+  --font-ui: "Plus Jakarta Sans", "Segoe UI", Arial, sans-serif;
+  --font-card: "Outfit", "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-signature: "Mea Culpa", "Playfair Display", Georgia, serif;
+  --font-hero-text: "Life Savers", "Plus Jakarta Sans", sans-serif;
+  --font-section-title: "Michroma", "Plus Jakarta Sans", sans-serif;
+  --font-product-title: "Grenze", "Playfair Display", Georgia, serif;
+  --font-footer-signature: "Edu AU VIC WA NT Hand", "Plus Jakarta Sans", cursive;
+  --font-nav: var(--font-ui);
+  --font-sidebar: var(--font-ui);
+}
+
 html {
   min-height: 100%;
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   min-height: 100%;
   margin: 0;
+  overflow-x: hidden;
   background: #fbfaf4;
   color: #132f30;
-  font-family: "Manrope", "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.55;
 }
 
 button,
@@ -20,6 +40,7 @@ input,
 select,
 textarea {
   font: inherit;
+  line-height: 1.25;
 }
 
 img {

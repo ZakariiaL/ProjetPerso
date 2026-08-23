@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService } from '../../services/cart.service';
+import { CartItem, CartService } from '../../services/cart.service';
 import { Product } from '../../models/product.model';
-import { CurrencyPipe, NgIf, NgFor } from '@angular/common';
+import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { isBrowser } from '../../utils/platform';
 
 @Component({
   selector: 'app-cart',
@@ -12,16 +13,68 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  cart: Product[] = [];
+  items: CartItem[] = [];
+  whatsappPhone = '212600000000';
 
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    this.cart = this.cartService.getCart();
+    if (isBrowser()) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
+
+    this.refreshItems();
+
+    this.cartService.cart$.subscribe(() => {
+      this.refreshItems();
+    });
   }
 
-  total(): number {
-    return this.cart.reduce((sum, p) => sum + p.price, 0);
+  get totalQuantity(): number {
+    return this.items.reduce((sum, item) => sum + item.quantity, 0);
+  }
+
+  get subtotal(): number {
+    return this.items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  }
+
+  get deliveryLabel(): string {
+    return 'À confirmer';
+  }
+
+  get whatsappUrl(): string {
+    const lines = this.items.map((item) => {
+      const total = item.product.price * item.quantity;
+      return `- ${item.product.name} (${this.getProductFormat(item.product)}) x${item.quantity} = ${total} MAD`;
+    });
+
+    const message = [
+      'Bonjour, je souhaite commander :',
+      ...lines,
+      '',
+      `Total produits : ${this.subtotal} MAD`,
+      'Livraison : à confirmer',
+      '',
+      'Merci de me confirmer la disponibilité et la livraison.'
+    ].join('\n');
+
+    return `https://wa.me/${this.whatsappPhone}?text=${encodeURIComponent(message)}`;
+  }
+
+  increase(item: CartItem): void {
+    this.cartService.increaseQuantity(item.product.id);
+  }
+
+  decrease(item: CartItem): void {
+    this.cartService.decreaseQuantity(item.product.id);
+  }
+
+  remove(item: CartItem): void {
+    this.cartService.removeProduct(item.product.id);
+  }
+
+  clearCart(): void {
+    this.cartService.clearCart();
   }
 
   getProductImage(product: Product): string {
@@ -34,5 +87,19 @@ export class CartComponent implements OnInit {
     }
 
     return `http://localhost:9095${product.imageUrl}`;
+  }
+
+  getProductFormat(product: Product): string {
+    const concentration = product.concentration?.trim() || 'Extrait de parfum';
+    const volume = product.volume?.trim() || '30ml';
+    return `${concentration} / ${volume}`;
+  }
+
+  trackByProductId(_index: number, item: CartItem): number {
+    return item.product.id;
+  }
+
+  private refreshItems(): void {
+    this.items = this.cartService.getCartItems();
   }
 }

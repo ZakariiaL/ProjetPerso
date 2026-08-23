@@ -4,30 +4,108 @@
     <h1>Votre sélection</h1>
   </div>
 
-  <div *ngIf="cart.length === 0" class="empty">
+  <div *ngIf="items.length === 0" class="empty">
     <span class="material-icons">shopping_bag</span>
     <h2>Votre panier est vide</h2>
-    <p>Ajoutez vos parfums préférés et retrouvez-les ici.</p>
-    <a routerLink="/">Explorer le catalogue</a>
+    <p>Découvrez nos parfums d'exception et ajoutez vos favoris.</p>
+    <a routerLink="/">Découvrir la boutique</a>
   </div>
 
-  <div class="cart-layout" *ngIf="cart.length > 0">
+  <div class="cart-layout" *ngIf="items.length > 0">
     <div class="cart-list">
-      <article class="cart-item" *ngFor="let product of cart">
-        <img [src]="getProductImage(product)" alt="{{ product.name }}" />
-        <div class="details">
-          <span>{{ product.brand || 'Mustaparfums' }}</span>
-          <h3>{{ product.name }}</h3>
-          <p>{{ product.price | currency:'MAD':'symbol':'1.0-0' }}</p>
+      <div class="cart-tools">
+        <div>
+          <span>{{ totalQuantity }} article{{ totalQuantity > 1 ? 's' : '' }}</span>
+          <p>Livraison 24/48h partout au Maroc, paiement à la livraison.</p>
         </div>
+        <button type="button" (click)="clearCart()">Vider le panier</button>
+      </div>
+
+      <div class="cart-table-head" aria-hidden="true">
+        <span>Produit</span>
+        <span>Prix</span>
+        <span>Quantité</span>
+        <span>Total</span>
+      </div>
+
+      <article class="cart-item" *ngFor="let item of items; trackBy: trackByProductId">
+        <div class="item-media">
+          <img [src]="getProductImage(item.product)" [alt]="item.product.name" />
+        </div>
+
+        <div class="details">
+          <span>{{ item.product.brand || 'Moustaparfum' }}</span>
+          <h3>{{ item.product.name }}</h3>
+          <p>{{ getProductFormat(item.product) }}</p>
+          <strong>{{ item.product.price | currency:'MAD':'symbol':'1.0-0' }}</strong>
+        </div>
+
+        <strong class="desktop-unit-price">{{ item.product.price | currency:'MAD':'symbol':'1.0-0' }}</strong>
+
+        <div class="item-actions">
+          <div class="quantity-control" aria-label="Quantité">
+            <button type="button" (click)="decrease(item)" aria-label="Réduire la quantité">
+              <span class="material-icons">remove</span>
+            </button>
+            <span>{{ item.quantity }}</span>
+            <button type="button" (click)="increase(item)" aria-label="Augmenter la quantité">
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+
+          <button class="remove-btn" type="button" (click)="remove(item)">
+            <span class="material-icons">delete_outline</span>
+            Supprimer
+          </button>
+        </div>
+
+        <strong class="line-total">{{ item.product.price * item.quantity | currency:'MAD':'symbol':'1.0-0' }}</strong>
       </article>
     </div>
 
     <aside class="cart-summary">
-      <span>Total</span>
-      <strong>{{ total() | currency:'MAD':'symbol':'1.0-0' }}</strong>
-      <p>La finalisation se fait par contact direct afin de confirmer la disponibilité et la livraison.</p>
-      <a href="https://wa.me/212600000000" target="_blank">Commander via WhatsApp</a>
+      <div class="summary-card">
+        <p class="summary-eyebrow">Résumé de commande</p>
+
+        <div class="summary-row">
+          <span>Sous-total</span>
+          <strong>{{ subtotal | currency:'MAD':'symbol':'1.0-0' }}</strong>
+        </div>
+
+        <div class="summary-row muted">
+          <span>Livraison</span>
+          <strong>{{ deliveryLabel }}</strong>
+        </div>
+
+        <div class="summary-total">
+          <span>Total</span>
+          <strong>{{ subtotal | currency:'MAD':'symbol':'1.0-0' }}</strong>
+        </div>
+
+        <a class="whatsapp-order" [href]="whatsappUrl" target="_blank" rel="noopener">
+          <i class="fab fa-whatsapp"></i>
+          Commander via WhatsApp
+        </a>
+
+        <p class="summary-note">
+          Paiement à la livraison. La disponibilité et les frais de livraison sont confirmés sur WhatsApp.
+        </p>
+      </div>
+
+      <div class="service-box">
+        <div>
+          <span class="material-icons">local_shipping</span>
+          <p>Livraison 24/48h partout au Maroc</p>
+        </div>
+        <div>
+          <span class="material-icons">verified</span>
+          <p>Parfums authentiques et sélectionnés</p>
+        </div>
+        <div>
+          <span class="material-icons">support_agent</span>
+          <p>Conseil personnalisé avant commande</p>
+        </div>
+      </div>
     </aside>
   </div>
 </section>

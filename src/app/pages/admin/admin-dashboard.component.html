@@ -1,165 +1,274 @@
 <section class="admin-container">
-  <div class="admin-header">
+  <header class="admin-hero">
     <div>
-      <p>Administration</p>
-      <h1>Gestion des parfums</h1>
+      <p class="eyebrow">Back-office Moustaparfum</p>
+      <h1>Gestion du catalogue</h1>
     </div>
-    <span>{{ products.length }} référence{{ products.length > 1 ? 's' : '' }}</span>
-  </div>
+
+    <div class="admin-session">
+      <span class="material-icons">admin_panel_settings</span>
+      <div>
+        <strong>{{ authService.currentSession?.username || 'Admin' }}</strong>
+        <small>Session administrateur</small>
+      </div>
+    </div>
+  </header>
+
+  <section class="stats-grid" aria-label="Indicateurs catalogue">
+    <article>
+      <span class="material-icons">inventory_2</span>
+      <div>
+        <small>Références</small>
+        <strong>{{ totalProducts }}</strong>
+      </div>
+    </article>
+    <article>
+      <span class="material-icons">check_circle</span>
+      <div>
+        <small>En stock</small>
+        <strong>{{ inStockCount }}</strong>
+      </div>
+    </article>
+    <article>
+      <span class="material-icons">remove_shopping_cart</span>
+      <div>
+        <small>Ruptures</small>
+        <strong>{{ outOfStockCount }}</strong>
+      </div>
+    </article>
+  </section>
 
   <div *ngIf="error" class="alert alert-error">
-    {{ error }}
-    <button (click)="clearMessages()" class="alert-close">x</button>
+    <span class="material-icons">error</span>
+    <p>{{ error }}</p>
+    <button type="button" (click)="clearMessages()" aria-label="Fermer">×</button>
   </div>
 
   <div *ngIf="success" class="alert alert-success">
-    {{ success }}
-    <button (click)="clearMessages()" class="alert-close">x</button>
+    <span class="material-icons">check_circle</span>
+    <p>{{ success }}</p>
+    <button type="button" (click)="clearMessages()" aria-label="Fermer">×</button>
   </div>
 
-  <div class="admin-grid">
-    <form class="form-container" (ngSubmit)="saveProduct()">
-      <div class="section-title">
-        <span class="material-icons">inventory_2</span>
-        <h2>{{ newProduct.id ? 'Modifier le parfum' : 'Nouveau parfum' }}</h2>
+  <section class="admin-workspace">
+    <form class="editor-panel" (ngSubmit)="saveProduct()">
+      <div class="panel-heading">
+        <div>
+          <p>{{ isEditing ? 'Modification' : 'Création' }}</p>
+          <h2>{{ isEditing ? formProduct.name : 'Nouveau parfum' }}</h2>
+        </div>
+        <button type="button" class="ghost-button" (click)="resetForm()">
+          <span class="material-icons">add</span>
+          Nouveau
+        </button>
       </div>
 
-      <div class="form-section">
-        <h3>Identité</h3>
+      <div class="form-block">
+        <h3>Identité produit</h3>
         <div class="form-row">
-          <label>Nom du parfum *
-            <input [(ngModel)]="newProduct.name" name="name" required class="form-input" />
+          <label>
+            Nom du parfum *
+            <input [(ngModel)]="formProduct.name" name="name" required class="field" placeholder="Ex. Niche Ambre 01" />
           </label>
-          <label>Marque / inspiration *
-            <input [(ngModel)]="newProduct.brand" name="brand" required class="form-input" />
+          <label>
+            Marque / inspiration *
+            <input [(ngModel)]="formProduct.brand" name="brand" required class="field" placeholder="Moustaparfum" />
           </label>
         </div>
 
         <div class="form-row">
-          <label>Catégorie *
-            <select [(ngModel)]="newProduct.category" name="category" required class="form-input">
-              <option value="" disabled>Choisir</option>
-              <option value="HOMME">Homme</option>
-              <option value="FEMME">Femme</option>
-              <option value="niche">Niche</option>
-              <option value="ambiances">Ambiances</option>
+          <label>
+            Catégorie *
+            <select [(ngModel)]="formProduct.category" name="category" required class="field">
+              <option *ngFor="let category of categories" [value]="category.value">{{ category.label }}</option>
             </select>
           </label>
-          <label>Prix MAD *
-            <input [(ngModel)]="newProduct.price" name="price" type="text" required class="form-input" (keypress)="allowOnlyNumeric($event)" />
+          <label>
+            Disponibilité
+            <select [(ngModel)]="formProduct.inStock" name="inStock" class="field">
+              <option [ngValue]="true">En stock</option>
+              <option [ngValue]="false">Rupture</option>
+            </select>
           </label>
         </div>
-      </div>
 
-      <div class="form-section">
-        <h3>Structure parfum</h3>
         <div class="form-row">
-          <label>Concentration
-            <input [(ngModel)]="newProduct.concentration" name="concentration" class="form-input" placeholder="Extrait de parfum" />
+          <label>
+            Prix en MAD *
+            <input
+              [(ngModel)]="formProduct.price"
+              name="price"
+              required
+              class="field"
+              inputmode="decimal"
+              (keypress)="allowOnlyNumeric($event)"
+            />
           </label>
-          <label>Volume
-            <input [(ngModel)]="newProduct.volume" name="volume" class="form-input" placeholder="30ml" />
+          <label>
+            Format / volume *
+            <select [(ngModel)]="formProduct.volume" name="volume" class="field">
+              <option *ngFor="let volume of volumes" [value]="volume">{{ volume }}</option>
+            </select>
           </label>
         </div>
-
-        <div class="form-row three">
-          <label>Notes de tete
-            <input [(ngModel)]="newProduct.topNotes" name="topNotes" class="form-input" placeholder="Agrumes, epices..." />
-          </label>
-          <label>Notes de coeur
-            <input [(ngModel)]="newProduct.heartNotes" name="heartNotes" class="form-input" placeholder="Rose, jasmin..." />
-          </label>
-          <label>Notes de fond
-            <input [(ngModel)]="newProduct.baseNotes" name="baseNotes" class="form-input" placeholder="Bois, musc..." />
-          </label>
-        </div>
-
-        <label>Description
-          <textarea [(ngModel)]="newProduct.description" name="description" class="form-textarea"></textarea>
-        </label>
       </div>
 
-      <div class="form-section">
-        <h3>Image et disponibilité</h3>
-        <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput hidden />
-        <div class="image-upload-container">
-          <button type="button" (click)="fileInput.click()" class="btn btn-outline">
-            <span class="material-icons">upload</span>
-            Choisir une image
-          </button>
-          <span *ngIf="selectedFile" class="file-name">{{ selectedFile.name }}</span>
+      <div class="form-block">
+        <h3>Détails produit</h3>
+        <div class="form-row">
+          <label>
+            Concentration
+            <select [(ngModel)]="formProduct.concentration" name="concentration" class="field">
+              <option *ngFor="let concentration of concentrations" [value]="concentration">{{ concentration }}</option>
+            </select>
+          </label>
+          <label>
+            Image produit *
+            <input type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput hidden />
+            <button type="button" class="outline-button upload-control" (click)="fileInput.click()">
+              <span class="material-icons">upload</span>
+              Importer une image
+            </button>
+          </label>
         </div>
 
-        <div *ngIf="imagePreview || newProduct.imageUrl" class="image-preview-container">
-          <img [src]="getPreviewImage()" alt="Aperçu" class="image-preview" />
-          <button type="button" (click)="removeSelectedImage()" class="remove-image">x</button>
-        </div>
-
-        <label class="stock-toggle">
-          <input [(ngModel)]="newProduct.inStock" name="inStock" type="checkbox" />
-          Produit en stock
+        <label>
+          Description commerciale
+          <textarea
+            [(ngModel)]="formProduct.description"
+            name="description"
+            class="field textarea"
+            placeholder="Décris le sillage, la tenue et l’usage idéal du parfum."
+          ></textarea>
         </label>
+
+        <div class="image-actions" *ngIf="previewImage || selectedFile">
+          <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+          <button *ngIf="previewImage" type="button" class="danger-link" (click)="removeSelectedImage()">
+            Retirer l’image
+          </button>
+        </div>
       </div>
 
       <div class="form-actions">
-        <button type="submit" [disabled]="loading || !canSubmit()" class="btn btn-primary">
-          {{ loading ? 'Traitement...' : (newProduct.id ? 'Modifier' : 'Ajouter') }}
+        <button type="submit" class="primary-button" [disabled]="saving || loading || !canSubmit">
+          <span class="material-icons">{{ isEditing ? 'save' : 'add_circle' }}</span>
+          {{ saving ? 'Enregistrement...' : (isEditing ? 'Enregistrer les modifications' : 'Publier le parfum') }}
         </button>
-        <button type="button" (click)="resetFormAndImage(); clearMessages()" class="btn btn-secondary">Annuler</button>
+        <button type="button" class="secondary-button" (click)="resetForm()">Annuler</button>
       </div>
     </form>
 
-    <aside class="preview-card">
-      <span class="preview-chip">{{ newProduct.category || 'Catégorie' }}</span>
-      <div class="preview-image">
-        <img *ngIf="imagePreview || newProduct.imageUrl" [src]="getPreviewImage()" alt="Preview" />
-        <span *ngIf="!imagePreview && !newProduct.imageUrl" class="material-icons">local_florist</span>
+    <aside class="preview-panel">
+      <div class="preview-card">
+        <span class="preview-chip">{{ getCategoryLabel(formProduct.category) }}</span>
+        <div class="preview-image">
+          <img *ngIf="previewImage" [src]="previewImage" alt="Aperçu du parfum" />
+          <span *ngIf="!previewImage" class="material-icons">local_florist</span>
+        </div>
+        <p>{{ formProduct.brand || 'Moustaparfum' }}</p>
+        <h2>{{ formProduct.name || 'Nom du parfum' }}</h2>
+        <strong>{{ formProduct.price || 0 | currency:'MAD':'symbol':'1.0-0' }}</strong>
+        <small>{{ formProduct.concentration || 'Extrait de parfum' }} / {{ formProduct.volume || '30ml' }}</small>
       </div>
-      <p>{{ newProduct.brand || 'Marque' }}</p>
-      <h2>{{ newProduct.name || 'Nom du parfum' }}</h2>
-      <strong>{{ newProduct.price || 0 | currency:'MAD':'symbol':'1.0-0' }}</strong>
-      <small>{{ newProduct.concentration || 'Extrait de parfum' }} - {{ newProduct.volume || '30ml' }}</small>
     </aside>
-  </div>
+  </section>
 
-  <div class="table-container">
-    <div class="table-header">
-      <h2>Catalogue</h2>
-      <span *ngIf="loading">Chargement...</span>
+  <section class="catalog-panel">
+    <div class="catalog-heading">
+      <div>
+        <p class="eyebrow">Catalogue</p>
+        <h2>{{ filteredProducts.length }} produit{{ filteredProducts.length > 1 ? 's' : '' }}</h2>
+      </div>
+      <button type="button" class="outline-button" (click)="loadProducts()">
+        <span class="material-icons">sync</span>
+        Actualiser
+      </button>
     </div>
 
-    <div class="table-scroll" *ngIf="products.length > 0; else noProducts">
-      <table class="products-table">
+    <div class="filters-bar">
+      <label class="search-field">
+        <span class="material-icons">search</span>
+        <input [(ngModel)]="searchTerm" name="searchTerm" (ngModelChange)="onFilterChange()" placeholder="Rechercher un parfum, une marque, une catégorie..." />
+      </label>
+
+      <select [(ngModel)]="categoryFilter" name="categoryFilter" (ngModelChange)="onFilterChange()">
+        <option value="all">Toutes les catégories</option>
+        <option *ngFor="let category of categories" [value]="category.value">{{ category.label }}</option>
+      </select>
+
+      <select [(ngModel)]="stockFilter" name="stockFilter" (ngModelChange)="onFilterChange()">
+        <option value="all">Tous les stocks</option>
+        <option value="in">En stock</option>
+        <option value="out">Rupture</option>
+      </select>
+
+      <select [(ngModel)]="sortKey" name="sortKey" (ngModelChange)="onFilterChange()">
+        <option value="recent">Plus récents</option>
+        <option value="name">Nom A-Z</option>
+        <option value="priceAsc">Prix croissant</option>
+        <option value="priceDesc">Prix décroissant</option>
+        <option value="stock">Stock d’abord</option>
+      </select>
+
+      <button type="button" class="ghost-button" (click)="clearFilters()">Réinitialiser</button>
+    </div>
+
+    <div class="table-shell" *ngIf="paginatedProducts.length > 0; else noProducts">
+      <table>
         <thead>
           <tr>
-            <th>Image</th>
-            <th>Parfum</th>
-            <th>Structure</th>
+            <th>Produit</th>
+            <th>Catégorie</th>
+            <th>Profil</th>
             <th>Prix</th>
             <th>Stock</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let p of paginatedProducts">
-            <td><img [src]="getProductImage(p)" class="product-image" /></td>
+          <tr *ngFor="let product of paginatedProducts; trackBy: trackByProductId">
             <td>
-              <strong>{{ p.name }}</strong>
-              <span>{{ p.brand }} - {{ p.category }}</span>
+              <div class="product-cell">
+                <img [src]="getProductImage(product)" [alt]="product.name" />
+                <div>
+                  <strong>{{ product.name }}</strong>
+                  <span>{{ product.brand }}</span>
+                </div>
+              </div>
             </td>
             <td>
-              <span>{{ p.concentration || 'Extrait de parfum' }} - {{ p.volume || '30ml' }}</span>
-              <small>{{ p.topNotes || 'Notes non renseignées' }}</small>
-            </td>
-            <td>{{ p.price | currency:'MAD':'symbol':'1.0-0' }}</td>
-            <td>
-              <span class="stock-badge" [class.in-stock]="p.inStock" [class.out-of-stock]="!p.inStock">
-                {{ p.inStock ? 'En stock' : 'Rupture' }}
+              <span class="category-badge">
+                <span class="material-icons">{{ getCategoryIcon(product.category) }}</span>
+                {{ getCategoryLabel(product.category) }}
               </span>
             </td>
             <td>
-              <button (click)="editProduct(p)" class="btn btn-success btn-small">Modifier</button>
-              <button (click)="deleteProduct(p.id)" class="btn btn-danger btn-small">Supprimer</button>
+              <div class="profile-cell">
+                <strong>{{ product.concentration || 'Extrait de parfum' }} / {{ product.volume || '30ml' }}</strong>
+                <span>{{ product.description || 'Description non renseignée' }}</span>
+              </div>
+            </td>
+            <td>
+              <strong>{{ product.price | currency:'MAD':'symbol':'1.0-0' }}</strong>
+            </td>
+            <td>
+              <button type="button" class="stock-pill" [class.out]="!product.inStock" (click)="toggleStock(product)">
+                {{ product.inStock ? 'En stock' : 'Rupture' }}
+              </button>
+            </td>
+            <td>
+              <div class="row-actions">
+                <button type="button" (click)="editProduct(product)" aria-label="Modifier">
+                  <span class="material-icons">edit</span>
+                </button>
+                <button type="button" (click)="duplicateProduct(product)" aria-label="Dupliquer">
+                  <span class="material-icons">content_copy</span>
+                </button>
+                <button type="button" class="danger" (click)="deleteProduct(product)" aria-label="Supprimer">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -169,14 +278,15 @@
     <ng-template #noProducts>
       <div class="empty-state">
         <span class="material-icons">inventory_2</span>
-        <p>Aucun produit trouvé.</p>
+        <h3>Aucun produit trouvé</h3>
+        <p>Modifie les filtres ou ajoute une nouvelle référence.</p>
       </div>
     </ng-template>
 
     <div class="pagination" *ngIf="totalPages > 1">
-      <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">Précédent</button>
+      <button type="button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Précédent</button>
       <span>Page {{ currentPage }} / {{ totalPages }}</span>
-      <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">Suivant</button>
+      <button type="button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Suivant</button>
     </div>
-  </div>
+  </section>
 </section>

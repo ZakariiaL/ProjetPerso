@@ -1,6 +1,6 @@
 <app-sidebar [isOpen]="sidebarOpen" (closed)="closeSidebar()"></app-sidebar>
 
-<app-navbar (menuClicked)="toggleSidebar()"></app-navbar>
+<app-navbar [sidebarOpen]="sidebarOpen" (menuClicked)="toggleSidebar()"></app-navbar>
 
 <div class="cart-toast" *ngIf="cartToastProduct">
   <span class="material-icons">shopping_bag</span>
@@ -13,7 +13,7 @@
 <main>
   <router-outlet></router-outlet>
 </main>
-<!-- Icônes de contact flottantes -->
+
 <div class="social-float">
   <a href="https://wa.me/212600000000" target="_blank" class="whatsapp" aria-label="WhatsApp">
     <i class="fab fa-whatsapp"></i>
@@ -25,6 +25,5 @@
     <i class="fab fa-instagram"></i>
   </a>
 </div>
-
 
 <app-footer></app-footer>

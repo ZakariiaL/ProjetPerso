@@ -9,6 +9,7 @@
     padding: 1rem;
     transition: right 0.3s ease;
     z-index: 1000;
+    font-family: var(--font-ui);
   
     &.open {
       right: 0;
@@ -40,11 +41,19 @@
       h4 {
         margin: 0;
       }
+
+      small {
+        display: block;
+        margin: 3px 0;
+        color: #7c8989;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
   
       p {
         margin: 0;
         color: #00915a;
-        font-weight: bold;
+        font-weight: 700;
       }
     }
   
@@ -52,7 +61,7 @@
       border-top: 1px solid #eee;
       padding-top: 1rem;
       font-size: 1.2rem;
-      font-weight: bold;
+      font-weight: 700;
       text-align: right;
     }
   }

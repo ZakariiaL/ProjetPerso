@@ -24,11 +24,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   banners = [
     {
       image: 'assets/parfums/Gemini_Generated_Image_5eia0o5eia0o5eia.jpg',
-      alt: 'Collection Musta Parfums - parfums d\'exception et elegance'
+      alt: 'Collection Musta Parfums - parfums d\'exception et élégance'
     },
     {
       image: 'assets/parfums/Gemini_Generated_Image_dpv2akdpv2akdpv2.jpg',
-      alt: 'Collection Musta Parfums - l\'art d\'etre soi'
+      alt: 'Collection Musta Parfums - l\'art d\'être soi'
     }
   ];
 
@@ -150,9 +150,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     return `${category} / ${concentration}`;
   }
 
-  getProductNotes(product: Product): string {
-    const notes = [product.topNotes, product.heartNotes, product.baseNotes].filter(Boolean);
-    return notes.length ? notes.join(' - ') : 'Signature olfactive intense et longue tenue';
+  getProductSummary(product: Product): string {
+    if (product.description?.trim()) {
+      return product.description.trim();
+    }
+
+    const concentration = product.concentration || 'Extrait de parfum';
+    const volume = this.getProductVolume(product);
+    return `${concentration} ${volume}, signature intense et longue tenue`;
+  }
+
+  getProductVolume(product: Product): string {
+    return product.volume?.trim() || '30ml';
   }
 
   private formatCategory(category: string): string {

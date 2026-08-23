@@ -20,18 +20,17 @@ export class SidebarComponent {
   }
 
   menus = [
-    { label: 'Accueil', icon: 'fas fa-home', route: '/' },
-    { label: 'Catalogue', icon: 'fas fa-fire', route: '/' },
-    { label: 'Parfums hommes', icon: 'fas fa-mars', route: '/category/homme' },
-    { label: 'Parfums femmes', icon: 'fas fa-venus', route: '/category/femme' },
-    { label: 'Niche', icon: 'fas fa-gem', route: '/category/niche' },
-    { label: 'Ambiances', icon: 'fas fa-spa', route: '/category/ambiances' },
-    { label: 'Nouveautés', icon: 'fas fa-star', route: '/collection' },
-    { label: 'Promotions', icon: 'fas fa-tags', route: '/collection' },
-    { label: 'Contact', icon: 'fas fa-phone', route: '/suivi' },
+    { label: 'Accueil', icon: 'home', route: '/' },
+    { label: 'Parfums hommes', icon: 'male', route: '/category/homme' },
+    { label: 'Parfums femmes', icon: 'female', route: '/category/femme' },
+    { label: 'Niche', icon: 'diamond', route: '/category/niche' },
+    { label: 'Ambiances', icon: 'spa', route: '/category/ambiances' },
+    { label: 'Nouveautés', icon: 'auto_awesome', route: '/collection' },
+    { label: 'Panier', icon: 'shopping_cart', route: '/cart' },
+    { label: 'Contact', icon: 'support_agent', route: '/contact' },
   ];
 
-  constructor(private router: Router, private sidebarservice: SidebarService) {
+  constructor(private router: Router, private sidebarService: SidebarService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.closeSidebar();
@@ -41,12 +40,20 @@ export class SidebarComponent {
 
   closeSidebar(): void {
     this.isClosed = true;
-    this.sidebarservice.toggleSidebar(this.isClosed);
+    this.sidebarService.toggleSidebar(this.isClosed);
     this.closed.emit();
   }
 
   navigate(route: string): void {
     this.router.navigate([route]);
     this.closeSidebar();
+  }
+
+  isActive(route: string): boolean {
+    if (route === '/') {
+      return this.router.url === '/';
+    }
+
+    return this.router.url.startsWith(route);
   }
 }

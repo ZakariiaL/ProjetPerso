@@ -10,71 +10,45 @@
 
     <div class="hero-visual" *ngIf="featuredProduct">
       <div class="bottle-stage">
+        <span class="fragrance-line line-one"></span>
+        <span class="fragrance-line line-two"></span>
+        <span class="fragrance-line line-three"></span>
         <img [src]="getProductImage(featuredProduct)" [alt]="featuredProduct.name" />
-      </div>
-      <div class="hero-product">
-        <span>{{ featuredProduct.brand || 'Mustaparfums' }}</span>
-        <strong>{{ featuredProduct.name }}</strong>
-        <small>{{ featuredProduct.price | currency:'MAD':'symbol':'1.0-0' }}</small>
       </div>
     </div>
   </section>
 
   <section
     class="campaign-carousel"
-    aria-label="Bannieres Musta Parfums"
+    aria-label="Bannières Musta Parfums"
     (mouseenter)="pauseBannerAutoplay()"
     (mouseleave)="startBannerAutoplay()"
   >
-    <a
+    <div
       *ngFor="let banner of banners; let index = index"
-      routerLink="/category/niche"
       class="campaign-banner"
       [class.active]="index === activeBannerIndex"
       aria-label="Collection Musta Parfums"
     >
-      <img
-        [src]="banner.image"
-        [alt]="banner.alt"
-      />
-    </a>
+      <img [src]="banner.image" [alt]="banner.alt" />
+    </div>
 
-    <button class="banner-control banner-control-left" type="button" aria-label="Banniere precedente" (click)="previousBanner()">
+    <button class="banner-control banner-control-left" type="button" aria-label="Bannière précédente" (click)="previousBanner()">
       &lsaquo;
     </button>
-    <button class="banner-control banner-control-right" type="button" aria-label="Banniere suivante" (click)="nextBanner()">
+    <button class="banner-control banner-control-right" type="button" aria-label="Bannière suivante" (click)="nextBanner()">
       &rsaquo;
     </button>
 
-    <div class="banner-dots" aria-label="Selection de la banniere">
+    <div class="banner-dots" aria-label="Sélection de la bannière">
       <button
         *ngFor="let banner of banners; let index = index"
         type="button"
         [class.active]="index === activeBannerIndex"
-        [attr.aria-label]="'Afficher la banniere ' + (index + 1)"
+        [attr.aria-label]="'Afficher la bannière ' + (index + 1)"
         (click)="goToBanner(index)"
       ></button>
     </div>
-  </section>
-
-  <section class="promo-banners" aria-label="Univers Moustaparfum">
-    <a routerLink="/category/ambiances" class="promo-card ambiance-card">
-      <div>
-        <span>Ambiances</span>
-        <h3>Parfumez votre intérieur</h3>
-        <p>Des notes douces et raffinées pour une atmosphère apaisante.</p>
-      </div>
-      <img src="assets/parfums/N4.png" alt="Parfum d'ambiance Moustaparfum" />
-    </a>
-
-    <a routerLink="/category/femme" class="promo-card feminine-card">
-      <div>
-        <span>Éclat féminin</span>
-        <h3>Des sillages lumineux</h3>
-        <p>Floraux, musqués ou gourmands, choisis pour marquer les esprits.</p>
-      </div>
-      <img src="assets/parfums/F3.png" alt="Parfum femme Moustaparfum" />
-    </a>
   </section>
 
   <section class="category-strip">
@@ -125,19 +99,23 @@
           <span class="material-icons">favorite_border</span>
         </button>
         <img [src]="getProductImage(product)" [alt]="product.name" />
-        <button class="quick-cart" type="button" (click)="addToCart($event, product)" [disabled]="!product.inStock">
-          {{ product.inStock ? 'Ajouter au panier' : 'Lire la suite' }}
-        </button>
       </div>
 
       <div class="product-content">
-        <span>{{ getProductMeta(product) }}</span>
+        <div class="product-meta-row">
+          <span class="product-category">{{ getProductMeta(product) }}</span>
+          <span class="product-volume">{{ getProductVolume(product) }}</span>
+        </div>
         <h3>{{ product.name }}</h3>
-        <p>{{ getProductNotes(product) }}</p>
+        <p>{{ getProductSummary(product) }}</p>
         <div class="product-bottom">
-          <strong>{{ product.price | currency:'MAD':'symbol':'1.0-0' }}</strong>
+          <div class="price-block">
+            <small>Prix</small>
+            <strong>{{ product.price | currency:'MAD':'symbol':'1.0-0' }}</strong>
+          </div>
           <button type="button" (click)="addToCart($event, product)" [disabled]="!product.inStock" aria-label="Ajouter au panier">
             <span class="material-icons">add_shopping_cart</span>
+            <span>Ajouter</span>
           </button>
         </div>
       </div>
