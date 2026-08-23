@@ -10,6 +10,28 @@ import { isBrowser } from '../utils/platform';
 export class ProductService {
   private baseUrl = 'http://localhost:9095/api/produits';
   private cachedProducts: Product[] = [];
+  private readonly localPerfumeImages = new Set([
+    'F1.png',
+    'F2.png',
+    'F3.png',
+    'F4.png',
+    'F5.png',
+    'F6.png',
+    'H1.png',
+    'H2.png',
+    'H3.png',
+    'H4.png',
+    'H5.png',
+    'H6.png',
+    'N1.png',
+    'N2.png',
+    'N3.png',
+    'N4.png',
+    'N5.png',
+    'N6.png',
+    'p1.png',
+    'p2.png'
+  ]);
 
   constructor(
     private http: HttpClient,
@@ -126,6 +148,7 @@ export class ProductService {
       ...product,
       id: Number(product.id),
       category: this.normalizeCategory(product.category, product),
+      imageUrl: this.normalizeImageUrl(product.imageUrl, product),
       price: Number(product.price || 0),
       inStock: Boolean(product.inStock),
       concentration: this.normalizeText(product.concentration) || 'Extrait de parfum',
@@ -137,6 +160,7 @@ export class ProductService {
     return {
       ...product,
       category: this.normalizeCategory(product.category, product),
+      imageUrl: this.normalizeImageUrl(product.imageUrl, product),
       price: Number(String(product.price || 0).replace(',', '.')),
       inStock: Boolean(product.inStock),
       concentration: this.normalizeText(product.concentration) || 'Extrait de parfum',
@@ -169,6 +193,69 @@ export class ProductService {
     return `${amount}${unit}`;
   }
 
+  private normalizeImageUrl(imageUrl: string | undefined, product?: Partial<Product | CreateProductRequest>): string {
+    const cleanedUrl = String(imageUrl || '').trim();
+    const imageFile = this.extractImageFile(cleanedUrl);
+
+    if (imageFile) {
+      return `assets/parfums/${imageFile}`;
+    }
+
+    const inferredFile = this.inferImageFile(product);
+
+    if (inferredFile) {
+      return `assets/parfums/${inferredFile}`;
+    }
+
+    return cleanedUrl;
+  }
+
+  private extractImageFile(imageUrl: string): string | null {
+    const fileName = imageUrl
+      .split(/[?#]/)[0]
+      .split(/[\\/]/)
+      .pop();
+
+    if (!fileName) {
+      return null;
+    }
+
+    const match = [...this.localPerfumeImages].find((image) => image.toLowerCase() === fileName.toLowerCase());
+    return match || null;
+  }
+
+  private inferImageFile(product?: Partial<Product | CreateProductRequest>): string | null {
+    const source = `${product?.name || ''} ${product?.category || ''}`
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    const numberMatch = source.match(/\b0?([1-6])\b/);
+
+    if (!numberMatch) {
+      return null;
+    }
+
+    const index = numberMatch[1];
+
+    if (/\b(homme|hommes|masculin)\b/.test(source)) {
+      return `H${index}.png`;
+    }
+
+    if (/\b(femme|femmes|feminin)\b/.test(source)) {
+      return `F${index}.png`;
+    }
+
+    if (/\b(niche|nice|unisexe|unisex|mixte)\b/.test(source)) {
+      return `N${index}.png`;
+    }
+
+    if (/\b(ambiance|ambiances|maison|interieur)\b/.test(source) && Number(index) <= 2) {
+      return `p${index}.png`;
+    }
+
+    return null;
+  }
+
   private normalizeCategory(category: string | undefined, product?: Partial<Product | CreateProductRequest>): string {
     const cleanCategory = String(category || '')
       .trim()
@@ -188,6 +275,7 @@ export class ProductService {
       women: 'femme',
       feminin: 'femme',
       niche: 'niche',
+      nice: 'niche',
       unisex: 'niche',
       unisexe: 'niche',
       mixte: 'niche',

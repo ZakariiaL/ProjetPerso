@@ -1255,18 +1255,25 @@
   }
 
   .product-bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 38px;
     gap: 8px;
     margin-top: auto;
     padding-top: 9px;
-    align-items: flex-end;
+    align-items: center;
   }
 
   .price-block {
     min-width: 0;
+    overflow: hidden;
   }
 
   .price-block strong {
+    display: block;
     font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .price-block small {
@@ -1278,6 +1285,7 @@
     width: 38px;
     height: 38px;
     flex: 0 0 38px;
+    justify-self: end;
     padding: 0;
     border: 1px solid rgba(0, 51, 52, 0.08);
     border-radius: 50%;
@@ -1390,6 +1398,7 @@
     width: 38px;
     height: 38px;
     flex-basis: 38px;
+    justify-self: end;
     padding: 0;
 
     span:not(.material-icons) {
@@ -1472,5 +1481,6 @@
     width: 34px;
     height: 34px;
     flex-basis: 34px;
+    justify-self: end;
   }
 }
