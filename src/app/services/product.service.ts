@@ -44,7 +44,7 @@ export class ProductService {
     }
 
     return this.http.get<Product[]>(this.baseUrl).pipe(
-      map((products) => this.cacheProducts(products?.length ? products : FALLBACK_PRODUCTS)),
+      map((products) => this.cacheProducts(this.completeCatalogWithDemoProducts(products || []))),
       catchError((error) => {
         console.warn('Backend produits indisponible, utilisation du catalogue local.', error);
         return of(this.cacheProducts(FALLBACK_PRODUCTS));
@@ -141,6 +141,20 @@ export class ProductService {
   private cacheProducts(products: Product[]): Product[] {
     this.cachedProducts = products.map((product) => this.normalizeProduct(product));
     return this.cachedProducts;
+  }
+
+  private completeCatalogWithDemoProducts(products: Product[]): Product[] {
+    if (!products.length) {
+      return FALLBACK_PRODUCTS;
+    }
+
+    const normalizedProducts = products.map((product) => this.normalizeProduct(product));
+    const existingCategories = new Set(normalizedProducts.map((product) => product.category));
+    const demoComplements = FALLBACK_PRODUCTS
+      .filter((product) => !existingCategories.has(product.category))
+      .map((product) => this.normalizeProduct(product));
+
+    return [...normalizedProducts, ...demoComplements];
   }
 
   private normalizeProduct(product: Product): Product {
