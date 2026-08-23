@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../models/product.model';
 import { CartService } from '../../services/cart.service';
@@ -10,16 +11,21 @@ import { isBrowser } from '../../utils/platform';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, CurrencyPipe],
+  imports: [CommonModule, FormsModule, RouterModule, CurrencyPipe],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  private allProducts: Product[] = [];
+  private categoryProducts: Product[] = [];
   products: Product[] = [];
   currentPage = 0;
   itemsPerPageMobile = 4;
   isMobile = false;
   activeCategory: string | null = null;
+  searchTerm = '';
+  stockFilter: 'all' | 'available' | 'out' = 'all';
+  sortKey: 'featured' | 'nameAsc' | 'priceAsc' | 'priceDesc' = 'featured';
   activeBannerIndex = 0;
   banners = [
     {
@@ -44,6 +50,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     private cartService: CartService
   ) {}
 
+  readonly stockOptions = [
+    { value: 'all', label: 'Tous les stocks' },
+    { value: 'available', label: 'En stock' },
+    { value: 'out', label: 'Rupture' }
+  ] as const;
+
+  readonly sortOptions = [
+    { value: 'featured', label: 'Sélection Musta' },
+    { value: 'nameAsc', label: 'Nom A-Z' },
+    { value: 'priceAsc', label: 'Prix croissant' },
+    { value: 'priceDesc', label: 'Prix décroissant' }
+  ] as const;
+
   ngOnInit(): void {
     if (isBrowser()) {
       this.isMobile = window.innerWidth < 768;
@@ -52,12 +71,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     this.productService.getAll().subscribe((all: Product[]) => {
+      this.allProducts = all;
       this.route.paramMap.subscribe(params => {
         const type = params.get('type');
         this.activeCategory = type;
-        this.products = type
+        this.categoryProducts = type
           ? all.filter((p: Product) => p.category?.toLowerCase() === type.toLowerCase())
           : all;
+        this.applyCatalogFilters(false);
         this.currentPage = 0;
 
         if (type && isBrowser()) {
@@ -90,6 +111,48 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   changePage(index: number): void {
     this.currentPage = index;
+  }
+
+  applyCatalogFilters(shouldScroll = true): void {
+    const search = this.normalizeSearch(this.searchTerm);
+    let nextProducts = [...this.categoryProducts];
+
+    if (search) {
+      nextProducts = nextProducts.filter((product) => {
+        const haystack = this.normalizeSearch([
+          product.name,
+          product.brand,
+          product.category,
+          product.concentration,
+          product.volume,
+          product.description
+        ].filter(Boolean).join(' '));
+        return haystack.includes(search);
+      });
+    }
+
+    if (this.stockFilter === 'available') {
+      nextProducts = nextProducts.filter((product) => product.inStock);
+    }
+
+    if (this.stockFilter === 'out') {
+      nextProducts = nextProducts.filter((product) => !product.inStock);
+    }
+
+    nextProducts.sort((a, b) => this.sortProducts(a, b));
+    this.products = nextProducts;
+    this.currentPage = 0;
+
+    if (shouldScroll && isBrowser()) {
+      setTimeout(() => this.scrollToCatalog(), 40);
+    }
+  }
+
+  resetCatalogFilters(): void {
+    this.searchTerm = '';
+    this.stockFilter = 'all';
+    this.sortKey = 'featured';
+    this.applyCatalogFilters();
   }
 
   nextBanner(): void {
@@ -198,6 +261,32 @@ export class HomeComponent implements OnInit, OnDestroy {
   private formatCategory(category: string): string {
     const cleanCategory = category.toLowerCase();
     return cleanCategory.charAt(0).toUpperCase() + cleanCategory.slice(1);
+  }
+
+  private sortProducts(a: Product, b: Product): number {
+    if (this.sortKey === 'nameAsc') {
+      return a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' });
+    }
+
+    if (this.sortKey === 'priceAsc') {
+      return Number(a.price || 0) - Number(b.price || 0);
+    }
+
+    if (this.sortKey === 'priceDesc') {
+      return Number(b.price || 0) - Number(a.price || 0);
+    }
+
+    const aIndex = this.allProducts.findIndex((product) => Number(product.id) === Number(a.id));
+    const bIndex = this.allProducts.findIndex((product) => Number(product.id) === Number(b.id));
+    return aIndex - bIndex;
+  }
+
+  private normalizeSearch(value: string): string {
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
   }
 
   private scrollToCatalog(): void {

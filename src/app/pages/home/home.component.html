@@ -1,10 +1,10 @@
 <section class="home-page">
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">Extraits de parfum</p>
+      <p class="eyebrow hero-brand">MustaParfum</p>
       <h1>Une signature intense, élégante et durable.</h1>
       <p class="hero-text">
-        Découvrez une sélection de parfums concentrés, choisis pour laisser un sillage propre, moderne et mémorable.
+        Révélez votre présence avec des fragrances intenses, raffinées et pensées pour laisser une empreinte inoubliable.
       </p>
     </div>
 
@@ -82,6 +82,38 @@
     <p>{{ products.length }} parfum{{ products.length > 1 ? 's' : '' }} disponible{{ products.length > 1 ? 's' : '' }}</p>
   </section>
 
+  <section class="catalog-tools" aria-label="Filtres et tri du catalogue">
+    <label class="search-field">
+      <span class="material-icons">search</span>
+      <input
+        type="search"
+        name="catalogSearch"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyCatalogFilters()"
+        placeholder="Rechercher un parfum"
+      />
+    </label>
+
+    <label class="select-field">
+      <span>Stock</span>
+      <select name="stockFilter" [(ngModel)]="stockFilter" (ngModelChange)="applyCatalogFilters()">
+        <option *ngFor="let option of stockOptions" [value]="option.value">{{ option.label }}</option>
+      </select>
+    </label>
+
+    <label class="select-field">
+      <span>Trier par</span>
+      <select name="sortKey" [(ngModel)]="sortKey" (ngModelChange)="applyCatalogFilters()">
+        <option *ngFor="let option of sortOptions" [value]="option.value">{{ option.label }}</option>
+      </select>
+    </label>
+
+    <button class="reset-filters" type="button" (click)="resetCatalogFilters()" aria-label="Réinitialiser les filtres">
+      <span class="material-icons">restart_alt</span>
+      Réinitialiser
+    </button>
+  </section>
+
   <section class="product-grid" *ngIf="products.length > 0; else emptyCatalog">
     <article
       class="product-card"
@@ -90,7 +122,6 @@
     >
       <div class="product-media">
         <div class="product-badges">
-          <span class="sale-chip">Must</span>
           <span class="stock-chip" [class.out]="!product.inStock">
             {{ product.inStock ? 'En stock' : 'Sold out' }}
           </span>
