@@ -2,7 +2,7 @@
   <button class="close-btn" type="button" (click)="closeSidebar()" aria-label="Fermer le panier">×</button>
 
   <div *ngFor="let item of cart" class="item">
-    <img [src]="item.product.imageUrl" [alt]="item.product.name" />
+    <img [src]="getProductImage(item.product)" [alt]="item.product.name" (error)="handleImageError($event)" />
     <div>
       <h4>{{ item.product.name }}</h4>
       <small>{{ getProductFormat(item.product) }}</small>

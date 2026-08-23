@@ -15,6 +15,7 @@ import { isBrowser } from '../../utils/platform';
 export class CartComponent implements OnInit {
   items: CartItem[] = [];
   whatsappPhone = '212600000000';
+  private readonly fallbackImage = 'assets/parfums/p1.png';
 
   constructor(private cartService: CartService) {}
 
@@ -79,14 +80,36 @@ export class CartComponent implements OnInit {
 
   getProductImage(product: Product): string {
     if (!product.imageUrl) {
-      return 'assets/parfums/p1.png';
+      return this.getAssetImage(this.fallbackImage);
     }
 
-    if (product.imageUrl.startsWith('assets/') || product.imageUrl.startsWith('http')) {
+    if (product.imageUrl.startsWith('assets/')) {
+      return this.getAssetImage(product.imageUrl);
+    }
+
+    if (product.imageUrl.startsWith('http')) {
       return product.imageUrl;
     }
 
     return `http://localhost:9095${product.imageUrl}`;
+  }
+
+  handleImageError(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    const fallback = this.getAssetImage(this.fallbackImage);
+
+    if (image.src !== fallback) {
+      image.src = fallback;
+    }
+  }
+
+  private getAssetImage(path: string): string {
+    const baseHref = isBrowser()
+      ? document.querySelector('base')?.getAttribute('href') || '/'
+      : '/';
+    const normalizedBase = baseHref.endsWith('/') ? baseHref : `${baseHref}/`;
+    const normalizedPath = path.replace(/^\/+/, '');
+    return `${normalizedBase}${normalizedPath}`;
   }
 
   getProductFormat(product: Product): string {

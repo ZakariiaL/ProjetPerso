@@ -13,7 +13,7 @@
         <span class="fragrance-line line-one"></span>
         <span class="fragrance-line line-two"></span>
         <span class="fragrance-line line-three"></span>
-        <img [src]="getProductImage(featuredProduct)" [alt]="featuredProduct.name" />
+        <img [src]="getProductImage(featuredProduct)" [alt]="featuredProduct.name" (error)="handleImageError($event)" />
       </div>
     </div>
   </section>
@@ -30,7 +30,7 @@
       [class.active]="index === activeBannerIndex"
       aria-label="Collection Musta Parfums"
     >
-      <img [src]="banner.image" [alt]="banner.alt" />
+      <img [src]="getAssetImage(banner.image)" [alt]="banner.alt" (error)="handleImageError($event)" />
     </div>
 
     <button class="banner-control banner-control-left" type="button" aria-label="Bannière précédente" (click)="previousBanner()">
@@ -98,7 +98,7 @@
         <button class="wishlist-btn" type="button" aria-label="Ajouter aux favoris" (click)="$event.stopPropagation()">
           <span class="material-icons">favorite_border</span>
         </button>
-        <img [src]="getProductImage(product)" [alt]="product.name" />
+        <img [src]="getProductImage(product)" [alt]="product.name" (error)="handleImageError($event)" />
       </div>
 
       <div class="product-content">

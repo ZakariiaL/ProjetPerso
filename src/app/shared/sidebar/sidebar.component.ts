@@ -45,7 +45,11 @@ export class SidebarComponent {
   }
 
   navigate(route: string): void {
-    this.router.navigate([route]);
+    this.router.navigate([route]).then(() => {
+      if (route.startsWith('/category')) {
+        this.scrollToCatalog();
+      }
+    });
     this.closeSidebar();
   }
 
@@ -55,5 +59,23 @@ export class SidebarComponent {
     }
 
     return this.router.url.startsWith(route);
+  }
+
+  private scrollToCatalog(): void {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    setTimeout(() => {
+      const catalog = document.querySelector('.catalog-header');
+
+      if (!catalog) {
+        return;
+      }
+
+      const offset = 132;
+      const top = catalog.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }, 90);
   }
 }

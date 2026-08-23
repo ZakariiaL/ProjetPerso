@@ -6,7 +6,7 @@
     </a>
     <div class="image-stage">
       <span class="glow"></span>
-      <img [src]="getProductImage()" [alt]="product.name" />
+      <img [src]="getProductImage()" [alt]="product.name" (error)="handleImageError($event)" />
     </div>
   </div>
 

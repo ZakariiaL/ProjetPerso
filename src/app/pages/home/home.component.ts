@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   private bannerTimerId: ReturnType<typeof setInterval> | null = null;
+  private readonly fallbackImage = 'assets/parfums/p1.png';
   private resizeListener = () => {
     this.isMobile = window.innerWidth < 768;
   };
@@ -58,6 +59,10 @@ export class HomeComponent implements OnInit, OnDestroy {
           ? all.filter((p: Product) => p.category?.toLowerCase() === type.toLowerCase())
           : all;
         this.currentPage = 0;
+
+        if (type && isBrowser()) {
+          setTimeout(() => this.scrollToCatalog(), 80);
+        }
       });
     });
   }
@@ -134,14 +139,40 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getProductImage(product: Product): string {
     if (!product.imageUrl) {
-      return 'assets/parfums/p1.png';
+      return this.getAssetImage(this.fallbackImage);
     }
 
-    if (product.imageUrl.startsWith('assets/') || product.imageUrl.startsWith('http')) {
+    if (product.imageUrl.startsWith('assets/')) {
+      return this.getAssetImage(product.imageUrl);
+    }
+
+    if (product.imageUrl.startsWith('http')) {
       return product.imageUrl;
     }
 
     return `http://localhost:9095${product.imageUrl}`;
+  }
+
+  getAssetImage(path: string): string {
+    if (path.startsWith('http')) {
+      return path;
+    }
+
+    const baseHref = isBrowser()
+      ? document.querySelector('base')?.getAttribute('href') || '/'
+      : '/';
+    const normalizedBase = baseHref.endsWith('/') ? baseHref : `${baseHref}/`;
+    const normalizedPath = path.replace(/^\/+/, '');
+    return `${normalizedBase}${normalizedPath}`;
+  }
+
+  handleImageError(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    const fallback = this.getAssetImage(this.fallbackImage);
+
+    if (image.src !== fallback) {
+      image.src = fallback;
+    }
   }
 
   getProductMeta(product: Product): string {
@@ -167,6 +198,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   private formatCategory(category: string): string {
     const cleanCategory = category.toLowerCase();
     return cleanCategory.charAt(0).toUpperCase() + cleanCategory.slice(1);
+  }
+
+  private scrollToCatalog(): void {
+    const catalog = document.querySelector('.catalog-header');
+
+    if (!catalog) {
+      return;
+    }
+
+    const offset = 132;
+    const top = catalog.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }
 
   trackByProductId(_index: number, product: Product): number {

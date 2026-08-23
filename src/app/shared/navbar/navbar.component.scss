@@ -266,11 +266,13 @@
 }
 
 .blackfriday-text {
+  font-family: var(--font-sale-ticker);
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #0a0909;
   padding-left: 100%;
   line-height: 36px;
+  letter-spacing: 0.02em;
 }
 
 @keyframes scroll-full-left {
