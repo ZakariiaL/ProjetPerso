@@ -862,9 +862,10 @@
   }
 
   .hero {
-    gap: 30px;
+    grid-template-columns: minmax(0, 1fr) minmax(118px, 34vw);
+    gap: 10px;
     padding-top: 12px;
-    align-items: start;
+    align-items: center;
     isolation: isolate;
 
     &::before {
@@ -874,43 +875,45 @@
 
   .hero-copy {
     z-index: 3;
+    min-width: 0;
   }
 
   .hero-copy h1 {
     max-width: 100%;
-    font-size: clamp(3.25rem, 16vw, 5.2rem);
-    line-height: 0.86;
+    font-size: clamp(2.65rem, 11vw, 4.2rem);
+    line-height: 0.84;
   }
 
   .hero-text {
-    margin-top: 14px;
-    font-size: 0.96rem;
-    line-height: 1.58;
+    max-width: 100%;
+    margin-top: 12px;
+    font-size: 0.78rem;
+    line-height: 1.5;
   }
 
   .hero-visual {
     z-index: 1;
     width: 100%;
-    min-height: 220px;
-    margin-top: 12px;
+    min-height: 170px;
+    margin-top: 0;
     overflow: visible;
 
     &::before {
-      width: min(208px, 54vw);
+      width: min(160px, 38vw);
     }
 
     &::after {
-      bottom: 20px;
-      width: min(160px, 44vw);
-      height: 34px;
+      bottom: 18px;
+      width: min(118px, 30vw);
+      height: 26px;
     }
   }
 
   .bottle-stage {
-    width: min(184px, 50vw);
+    width: min(142px, 34vw);
 
     img {
-      max-height: 176px;
+      max-height: 136px;
     }
   }
 
@@ -1146,8 +1149,38 @@
     width: min(100% - 16px, 390px);
   }
 
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(104px, 32vw);
+    gap: 8px;
+  }
+
   .hero-copy h1 {
-    font-size: clamp(3rem, 15vw, 4.4rem);
+    font-size: clamp(2.35rem, 10.5vw, 3.6rem);
+  }
+
+  .hero-text {
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+
+  .hero-visual {
+    min-height: 150px;
+
+    &::before {
+      width: min(138px, 36vw);
+    }
+
+    &::after {
+      width: min(104px, 28vw);
+    }
+  }
+
+  .bottle-stage {
+    width: min(122px, 32vw);
+
+    img {
+      max-height: 118px;
+    }
   }
 
   .campaign-carousel {
@@ -1212,6 +1245,40 @@
 }
 
 @media (max-width: 360px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 92px;
+    gap: 6px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.1rem, 10vw, 3rem);
+  }
+
+  .hero-text {
+    font-size: 0.68rem;
+  }
+
+  .hero-visual {
+    min-height: 128px;
+
+    &::before {
+      width: 112px;
+    }
+
+    &::after {
+      width: 84px;
+      height: 20px;
+    }
+  }
+
+  .bottle-stage {
+    width: 96px;
+
+    img {
+      max-height: 92px;
+    }
+  }
+
   .product-grid {
     gap: 8px;
   }
