@@ -840,8 +840,8 @@
   }
 
   .hero-visual {
-    min-height: 360px;
-    overflow: hidden;
+    min-height: 330px;
+    overflow: visible;
   }
 
   .product-grid {
@@ -862,7 +862,7 @@
   }
 
   .hero {
-    gap: 22px;
+    gap: 30px;
     padding-top: 12px;
     align-items: start;
     isolation: isolate;
@@ -891,26 +891,26 @@
   .hero-visual {
     z-index: 1;
     width: 100%;
-    min-height: 250px;
-    margin-top: 8px;
-    overflow: hidden;
+    min-height: 220px;
+    margin-top: 12px;
+    overflow: visible;
 
     &::before {
-      width: min(250px, 66vw);
+      width: min(208px, 54vw);
     }
 
     &::after {
-      bottom: 22px;
-      width: min(190px, 52vw);
-      height: 42px;
+      bottom: 20px;
+      width: min(160px, 44vw);
+      height: 34px;
     }
   }
 
   .bottle-stage {
-    width: min(220px, 62vw);
+    width: min(184px, 50vw);
 
     img {
-      max-height: 210px;
+      max-height: 176px;
     }
   }
 
