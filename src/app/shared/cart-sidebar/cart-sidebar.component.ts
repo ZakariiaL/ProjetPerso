@@ -62,7 +62,7 @@ export class CartSidebarComponent {
   private getAssetImage(path: string): string {
     const baseHref = isBrowser()
       ? document.querySelector('base')?.getAttribute('href') || '/'
-      : '/';
+      : '/ProjetPerso/';
     const normalizedBase = baseHref.endsWith('/') ? baseHref : `${baseHref}/`;
     const normalizedPath = path.replace(/^\/+/, '');
     return `${normalizedBase}${normalizedPath}`;

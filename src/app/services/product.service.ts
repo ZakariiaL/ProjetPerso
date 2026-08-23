@@ -330,7 +330,11 @@ export class ProductService {
   }
 
   private shouldUseStaticCatalog(): boolean {
-    return isBrowser() && window.location.hostname.includes('github.io');
+    if (!isBrowser()) {
+      return true;
+    }
+
+    return window.location.hostname.includes('github.io');
   }
 
   private findFallbackProduct(id: number): Product {
